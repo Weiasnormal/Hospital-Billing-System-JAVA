@@ -6,5 +6,5 @@ public class Person {
     public String Name;
     public int Age;
     public String Gender;
-    public int ContactNumber;
+    public String ContactNumber;
 }

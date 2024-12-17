@@ -3,7 +3,7 @@ package org.example;
 import java.util.Scanner;
 
 public class User_Interface {
-    static void _consoleClear(){
+    public static void ConsoleClear(){
         // due to not having a built-in function for clearing the entire text in the console,
         // a function/method equivalent to Console.Clear() is made
         try {
@@ -18,7 +18,7 @@ public class User_Interface {
     }
 
     public static void Main_Menu(){
-        _consoleClear();
+        ConsoleClear();
         System.out.println("--Welcome to Hospital Billing System--"); // example UI
         System.out.println(
                      """
@@ -32,9 +32,16 @@ public class User_Interface {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         switch(input){
+            case "0":
+                // show all patients
+                ConsoleClear();
+                _viewAllPatients();
+                break;
             case "1":
                 //go to register new patient
-                _registerNewPatient();
+                ConsoleClear();
+                PatientService patient_service = new PatientService();
+                patient_service.PatientMain();
                 break;
             case "2":
                 //add services and departments visited
@@ -58,38 +65,12 @@ public class User_Interface {
         }
     }
 
+    // temporary only for testing
+    private static void _viewAllPatients() {
+
+    }
+
     private static void _registerNewPatient(){
-        System.out.println("Register New Patient");
-        System.out.println("""
-                [1] Continue
-                [2] Back""");
-        System.out.print("> ");
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        if(!(input.equals("1") || input.equals("2"))) {
-            _registerNewPatient(); // serves as a error handler
-        }
-        if(input.equals("2")){
-            Main_Menu(); // will return to main menu if 'input' is 2
-        }
 
-        // if the 'input' is 1, the _registerNewPatient() method will continue
-        // and ask the user to input the patient information
-        System.out.println("[INPUT]");
-        System.out.print("Name : ");
-        String name = scanner.nextLine();
-        System.out.print("Age : ");
-        int age = scanner.nextInt();
-        scanner.nextLine(); // to prevent skipping the next ".nextLine()"
-        System.out.print("Gender : ");
-        String gender = scanner.nextLine();
-        System.out.print("Contact Number : ");
-        int contact_number = scanner.nextInt();
-        scanner.nextLine(); // to prevent skipping the next ".nextLine()"
-
-        Patient patient = new Patient(name, age, gender, contact_number);
-        patient.Validation();
-        _consoleClear();
-        Main_Menu();
     }
 }

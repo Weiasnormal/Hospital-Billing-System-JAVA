@@ -1,5 +1,5 @@
 /* TODO:
- * add validation for contact number and gender
+ *
  */
 
 package org.example;
