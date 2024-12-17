@@ -22,6 +22,20 @@ public class Database {
         }
     }
 
+    public void GetUserInformation(int id) {
+        for(int i = 1; i < _userInformation.length; i++){
+            if(!(_userInformation[i][0].equals(String.valueOf(id)))){
+                System.out.println("Patient not found!");
+                return;
+            }
+        }
+        System.out.println(_userInformation[0][0] + "             : " + _userInformation[id][0]);
+        System.out.println(_userInformation[0][1] + "           : " + _userInformation[id][1]);
+        System.out.println(_userInformation[0][2] + "            : " + _userInformation[id][2]);
+        System.out.println(_userInformation[0][3] + "         : " + _userInformation[id][3]);
+        System.out.println(_userInformation[0][4] + " : " + _userInformation[id][4]);
+    }
+
     public boolean GetUserInformation(String name) {
         for(int i = 1; i < _userInformation.length; i++){
             if(_userInformation[i][1].toLowerCase().equals(name)){

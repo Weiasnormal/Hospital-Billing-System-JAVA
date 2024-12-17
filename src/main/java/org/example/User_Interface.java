@@ -30,17 +30,17 @@ public class User_Interface {
                 );
         System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
+        PatientService patient_service = new PatientService();
         String input = scanner.nextLine();
         switch(input){
             case "0":
-                // show all patients
+                // this is temporary only to show all patients
                 ConsoleClear();
-                _viewAllPatients();
+                patient_service.ViewAllPatients();
                 break;
             case "1":
                 //go to register new patient
                 ConsoleClear();
-                PatientService patient_service = new PatientService();
                 patient_service.PatientMain();
                 break;
             case "2":
@@ -63,14 +63,5 @@ public class User_Interface {
                 Main_Menu();
                 break;
         }
-    }
-
-    // temporary only for testing
-    private static void _viewAllPatients() {
-
-    }
-
-    private static void _registerNewPatient(){
-
     }
 }

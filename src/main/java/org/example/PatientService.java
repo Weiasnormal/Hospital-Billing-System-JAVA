@@ -9,7 +9,8 @@ public class PatientService extends PatientServiceTemplate{
         System.out.println("""
                 [1] Register New Patient
                 [2] View All Patients
-                [3] Back""");
+                [3] Search Patient
+                [4] Back"""); // view all patients is only temporary here for testing
         System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
@@ -21,6 +22,9 @@ public class PatientService extends PatientServiceTemplate{
                 ViewAllPatients();
                 break;
             case "3":
+                SearchPatient();
+                break;
+            case "4":
                 User_Interface.Main_Menu();
                 break;
         }
@@ -63,24 +67,22 @@ public class PatientService extends PatientServiceTemplate{
     }
 
     @Override
+    void SearchPatient() {
+        System.out.print("Search Patient ID : ");
+        Scanner scanner = new Scanner(System.in);
+        int id = scanner.nextInt();
+        Database database = new Database();
+        database.GetUserInformation(id);
+        User_Interface.Main_Menu();
+    }
+
+    @Override
     void ViewAllPatients() {
         Database database = new Database();
         Scanner scanner = new Scanner(System.in);
         database.GetUserInformation();
-        System.out.println("Return? [Y/N]");
-        System.out.print("> ");
-        String input = scanner.nextLine();
-        switch (input){
-            case "Y":
-                User_Interface.Main_Menu();
-                break;
-            case "N":
-                System.out.println("Okay, edi don't");
-                break;
-            default:
-//                _viewAllPatients(); error
-                break;
-        }
+        System.out.println("Press enter to continue...");
+        scanner.nextLine(); // if enter key is pressed, it will continue and execute the next line of code
         User_Interface.Main_Menu();
     }
 }
