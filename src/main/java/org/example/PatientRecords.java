@@ -2,15 +2,17 @@ package org.example;
 
 import java.util.Scanner;
 
-public class PatientService extends PatientServiceTemplate{
+public class PatientRecords extends PatientRecordsTemplate {
     @Override
     void PatientMain(){
-        System.out.println("Patient Main Menu");
+        System.out.println("=== Manage Patient Records ===");
         System.out.println("""
-                [1] Register New Patient
-                [2] View All Patients
-                [3] Search Patient
-                [4] Back"""); // view all patients is only temporary here for testing
+        Please select an option:
+        [1] Register a Patient
+        [2] View Patient List
+        [3] Search for a Patient
+        [4] Return to Main Menu
+        """); // view all patients is only temporary here for testing
         System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
@@ -25,7 +27,7 @@ public class PatientService extends PatientServiceTemplate{
                 SearchPatient();
                 break;
             case "4":
-                User_Interface.Main_Menu();
+                UserInterface.MainMenu();
                 break;
         }
     }
@@ -43,12 +45,12 @@ public class PatientService extends PatientServiceTemplate{
             RegisterNewPatient(); // serves as a error handler
         }
         if(input.equals("2")){
-            User_Interface.Main_Menu(); // will return to main menu if 'input' is 2
+            UserInterface.MainMenu(); // will return to main menu if 'input' is 2
         }
 
         // if the 'input' is 1, the _registerNewPatient() method will continue
         // and ask the user to input the patient information
-        User_Interface.ConsoleClear();
+        UserInterface.ConsoleClear();
         System.out.println("[INPUT]");
         System.out.print("Name : ");
         String name = scanner.nextLine();
@@ -61,9 +63,9 @@ public class PatientService extends PatientServiceTemplate{
         String contact_number = scanner.nextLine();
 
         Patient patient = new Patient(name, age, gender, contact_number);
-        User_Interface.ConsoleClear();
+        UserInterface.ConsoleClear();
         patient.Validation();
-        User_Interface.Main_Menu();
+        UserInterface.MainMenu();
     }
 
     @Override
@@ -73,7 +75,7 @@ public class PatientService extends PatientServiceTemplate{
         int id = scanner.nextInt();
         Database database = new Database();
         database.GetUserInformation(id);
-        User_Interface.Main_Menu();
+        UserInterface.MainMenu();
     }
 
     @Override
@@ -83,6 +85,6 @@ public class PatientService extends PatientServiceTemplate{
         database.GetUserInformation();
         System.out.println("Press enter to continue...");
         scanner.nextLine(); // if enter key is pressed, it will continue and execute the next line of code
-        User_Interface.Main_Menu();
+        UserInterface.MainMenu();
     }
 }
