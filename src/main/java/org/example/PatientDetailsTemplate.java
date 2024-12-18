@@ -5,4 +5,5 @@ abstract class PatientDetailsTemplate {
     abstract void AddDepartment();
     abstract void AddService();
     abstract void AddMedicine();
+    abstract void ViewAllEntries();
 }

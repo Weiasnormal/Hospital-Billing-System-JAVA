@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.Scanner;
 
-public class PatientRecords extends PatientRecordsTemplate {
+public class PatientInformation extends PatientInformationTemplate {
     @Override
     void PatientMain(){
         System.out.println("=== Manage Patient Records ===");
@@ -74,7 +74,8 @@ public class PatientRecords extends PatientRecordsTemplate {
         Scanner scanner = new Scanner(System.in);
         int id = scanner.nextInt();
         Database database = new Database();
-        database.GetUserInformation(id);
+        boolean exists = database.GetUserInformation(id);
+        database.GetUserInformation(id, exists);
         UserInterface.MainMenu();
     }
 

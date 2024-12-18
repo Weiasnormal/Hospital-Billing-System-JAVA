@@ -32,7 +32,7 @@ public class UserInterface {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         ConsoleClear();
-        PatientRecords patient_service = new PatientRecords();
+        PatientInformation patient_service = new PatientInformation();
         switch(input){
             case "0":
                 // this is temporary only to show all patients

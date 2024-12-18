@@ -1,6 +1,6 @@
 package org.example;
 
-abstract class PatientRecordsTemplate {
+abstract class PatientInformationTemplate {
     abstract void PatientMain();
     abstract void RegisterNewPatient();
     abstract void ViewAllPatients();
