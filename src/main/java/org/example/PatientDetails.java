@@ -80,42 +80,54 @@ public class PatientDetails extends PatientDetailsTemplate {
         String selected;
         switch (option) {
             case 1:
-                servicesUsed = new GeneralMedicine();
+                servicesUsed = new Department_GeneralMedicine();
                 selected = servicesUsed.addServices();
                 servicesUsed.InsertToDatabase(selected);
                 break;
             case 2:
-                servicesUsed = new Cardiology();
+                servicesUsed = new Department_Cardiology();
                 selected = servicesUsed.addServices();
                 servicesUsed.InsertToDatabase(selected);
                 break;
             case 3:
-                servicesUsed = new Radiology();
+                servicesUsed = new Department_Radiology();
                 selected = servicesUsed.addServices();
                 servicesUsed.InsertToDatabase(selected);
                 break;
             case 4:
-                servicesUsed = new Orthopedics();
+                servicesUsed = new Department_Orthopedics();
                 selected = servicesUsed.addServices();
                 servicesUsed.InsertToDatabase(selected);
                 break;
             case 5:
-                servicesUsed = new Emergency();
+                servicesUsed = new Department_Emergency();
                 selected = servicesUsed.addServices();
                 servicesUsed.InsertToDatabase(selected);
                 break;
             case 6:
-                servicesUsed = new LaboratoryServices();
+                servicesUsed = new Department_LaboratoryServices();
                 selected = servicesUsed.addServices();
                 servicesUsed.InsertToDatabase(selected);
                 break;
             case 7:
+                servicesUsed = new Department_Surgery();
+                selected = servicesUsed.addServices();
+                servicesUsed.InsertToDatabase(selected);
                 break;
             case 8:
+                servicesUsed = new Department_Pediatrics();
+                selected = servicesUsed.addServices();
+                servicesUsed.InsertToDatabase(selected);
                 break;
             case 9:
+                servicesUsed = new Department_Maternity();
+                selected = servicesUsed.addServices();
+                servicesUsed.InsertToDatabase(selected);
                 break;
             case 10:
+                servicesUsed = new Department_Dental();
+                selected = servicesUsed.addServices();
+                servicesUsed.InsertToDatabase(selected);
                 break;
             default:
                 break;

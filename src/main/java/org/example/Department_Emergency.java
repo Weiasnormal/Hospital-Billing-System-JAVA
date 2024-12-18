@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.Scanner;
 
-public class Emergency extends ServicesUsed{
+public class Department_Emergency extends ServicesUsed{
     @Override
     public String addServices() {
         String departmentName = "Emergency";
