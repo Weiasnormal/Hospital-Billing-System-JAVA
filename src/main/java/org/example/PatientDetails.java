@@ -5,33 +5,30 @@ import java.util.Scanner;
 public class PatientDetails extends PatientDetailsTemplate {
     @Override
     void DeptServiceMain() {
-        CheckIfPatientIdExists(); // check muna if patient id exists; no >> return main menu; yes >> continue program
+        int selectedId = CheckIfPatientIdExists(); // check muna if patient id exists; no >> return main menu; yes >> hold ID and continue program
+
         System.out.println("=== Add Patient Details ===");
         System.out.println("""
         Please select an option:
-        [1] Add Visited Department
-        [2] Add Service Used
-        [3] Add Prescribed Medicine
-        [4] View All Entries
-        [5] Return to Main Menu""");
+        [1] Add Department and Services
+        [2] Add Prescribed Medicine
+        [3] View All Entries
+        [4] Return to Main Menu""");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         scanner.nextLine();
         UserInterface.ConsoleClear();
         switch (option) {
             case 1:
-                AddDepartment();
+                AddDepartmentAndServices();
                 break;
             case 2:
-                AddService();
-                break;
-            case 3:
                 AddMedicine();
                 break;
-            case 4:
+            case 3:
                 ViewAllEntries();
                 break;
-            case 5:
+            case 4:
                 UserInterface.MainMenu();
             default:
                 DeptServiceMain();
@@ -39,7 +36,7 @@ public class PatientDetails extends PatientDetailsTemplate {
         }
     }
 
-    private void CheckIfPatientIdExists() {
+    private int CheckIfPatientIdExists() {
         // ito yung magchecheck kung existing yung patient id
 
         // pag hindi, magrereturn ng "patient does not exist"(makikita tong part na to sa database.java)
@@ -62,16 +59,11 @@ public class PatientDetails extends PatientDetailsTemplate {
         if (!exists) {
             UserInterface.MainMenu();
         }
-    }
-
-
-    @Override
-    void AddDepartment() {
-
+        return patientId;
     }
 
     @Override
-    void AddService() {
+    void AddDepartmentAndServices() {
 
     }
 
