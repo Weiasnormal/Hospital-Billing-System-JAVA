@@ -4,7 +4,7 @@ public class Database {
     // serves as temporary database
     private static String[][] _patientInformation = {
             {"ID", "Name", "Age", "Gender", "Contact Number"},
-            {"", "", "", "", ""},
+            {"1", "Hacihman", "17", "Male", "09123456789"},
             {"", "", "", "", ""},
             {"", "", "", "", ""},
             {"", "", "", "", ""},

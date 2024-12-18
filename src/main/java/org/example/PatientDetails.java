@@ -13,7 +13,9 @@ public class PatientDetails extends PatientDetailsTemplate {
         [1] Add Department and Services
         [2] Add Prescribed Medicine
         [3] View All Entries
-        [4] Return to Main Menu""");
+        [4] Change Patient ID
+        [5] Return to Main Menu""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         scanner.nextLine();
@@ -28,8 +30,9 @@ public class PatientDetails extends PatientDetailsTemplate {
             case 3:
                 ViewAllEntries();
                 break;
-            case 4:
+            case 5:
                 UserInterface.MainMenu();
+            case 4:
             default:
                 DeptServiceMain();
                 break;
@@ -37,17 +40,8 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     private int CheckIfPatientIdExists() {
-        // ito yung magchecheck kung existing yung patient id
-
-        // pag hindi, magrereturn ng "patient does not exist"(makikita tong part na to sa database.java)
-        // tapos babalik ng main menu
-
-        // kapag naman true, idederetso yung code don sa DeptServiceMain
-        // parang ampangit nga ng gawa ko rito, HAHAHA
-
-        // baghuin niyo na lang kung talagang ansama ng code ko rito, hahaha
         System.out.println("=== Add Patient Details ===");
-        System.out.print("Enter Patient ID");
+        System.out.println("Enter Patient ID");
         System.out.print("> ");
 
         Scanner scanner = new Scanner(System.in);
@@ -64,7 +58,53 @@ public class PatientDetails extends PatientDetailsTemplate {
 
     @Override
     void AddDepartmentAndServices() {
-
+        System.out.println("=== Select Deparment Visited ===");
+        System.out.println("""
+                Please select an option:
+                [1]  General Medicine
+                [2]  Cardiology
+                [3]  Radiology
+                [4]  Orthopedics
+                [5]  Emergency
+                [6]  Laboratory Services
+                [7]  Surgery
+                [8]  Pediatrics
+                [9]  Maternity
+                [10] Dental
+                [11] Return""");
+        System.out.print("> ");
+        Scanner scanner = new Scanner(System.in);
+        int option = scanner.nextInt();
+        scanner.nextLine();
+        ServicesUsed servicesUsed;
+        switch (option) {
+            case 1:
+                servicesUsed = new GeneralMedicine();
+                String selected = servicesUsed.addServices();
+                servicesUsed.InsertToDatabase(selected);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                break;
+            default:
+                break;
+        }
+        System.out.println("Deparment Visited and Services Used has been successfully added!"); // temporary only
     }
 
     @Override

@@ -3,7 +3,7 @@ package org.example;
 
 public class Patient extends Person {
     public Patient(String name, int age, String gender, String contact_number) {
-        Id = 0;
+        Id = 1;
         Name = name;
         Age = age;
         Gender = gender;
