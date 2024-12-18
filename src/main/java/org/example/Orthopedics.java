@@ -1,32 +1,35 @@
-// this is a superclass for all departments
-
 package org.example;
 
 import java.util.Scanner;
 
-public class ServicesUsed {
+public class Orthopedics  extends ServicesUsed{
+    @Override
     public String addServices() {
-        String departmentName = "Department Name";
+        String departmentName = "Orthopedics";
         String serviceUsed;
         System.out.println("=== Add Services Used ===");
         System.out.println("""
-                [1] Service 1
-                [2] Service 2
-                [3] Service 3
-                [4] Back""");
+                [1] Orthopedic Consultation
+                [2] Bone X-Ray
+                [3] Fracture Treatment
+                [4] Physiotherapy Session
+                [5] Back""");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {
             case 1:
-                serviceUsed = "Service 1";
+                serviceUsed = "Orthopedic Consultation";
                 return departmentName + " , " + serviceUsed;
             case 2:
-                serviceUsed = "Service 2";
+                serviceUsed = "Bone X-Ray";
                 return departmentName + " , " + serviceUsed;
             case 3:
-                serviceUsed = "Service 3";
+                serviceUsed = "Fracture Treatment";
                 return departmentName + " , " + serviceUsed;
             case 4:
+                serviceUsed = "Physiotherapy Session";
+                return departmentName + " , " + serviceUsed;
+            case 5:
                 PatientDetails patientDetails = new PatientDetails();
                 patientDetails.AddDepartmentAndServices();
             default:
@@ -34,14 +37,5 @@ public class ServicesUsed {
                 break;
         }
         return "";
-    }
-
-    public void InsertToDatabase(String name) {
-        String[] makeEmSplit = name.split(",");
-        String departmentName = makeEmSplit[0].trim();
-        String serviceUsed = makeEmSplit[1].trim();
-        System.out.println("They have been inserted into the database");
-        System.out.println("Department Name: " + departmentName);
-        System.out.println("Service Used: " + serviceUsed);
     }
 }

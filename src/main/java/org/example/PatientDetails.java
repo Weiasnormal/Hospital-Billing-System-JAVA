@@ -77,21 +77,37 @@ public class PatientDetails extends PatientDetailsTemplate {
         int option = scanner.nextInt();
         scanner.nextLine();
         ServicesUsed servicesUsed;
+        String selected;
         switch (option) {
             case 1:
                 servicesUsed = new GeneralMedicine();
-                String selected = servicesUsed.addServices();
+                selected = servicesUsed.addServices();
                 servicesUsed.InsertToDatabase(selected);
                 break;
             case 2:
+                servicesUsed = new Cardiology();
+                selected = servicesUsed.addServices();
+                servicesUsed.InsertToDatabase(selected);
                 break;
             case 3:
+                servicesUsed = new Radiology();
+                selected = servicesUsed.addServices();
+                servicesUsed.InsertToDatabase(selected);
                 break;
             case 4:
+                servicesUsed = new Orthopedics();
+                selected = servicesUsed.addServices();
+                servicesUsed.InsertToDatabase(selected);
                 break;
             case 5:
+                servicesUsed = new Emergency();
+                selected = servicesUsed.addServices();
+                servicesUsed.InsertToDatabase(selected);
                 break;
             case 6:
+                servicesUsed = new LaboratoryServices();
+                selected = servicesUsed.addServices();
+                servicesUsed.InsertToDatabase(selected);
                 break;
             case 7:
                 break;
