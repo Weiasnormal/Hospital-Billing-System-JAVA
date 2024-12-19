@@ -6,7 +6,11 @@ public class Department_Maternity extends ServicesUsed{
     public String addServices() {
         String departmentName = "Maternity";
         String serviceUsed;
-        System.out.println("=== Add Services Used ===");
+        System.out.println("""
+                
+                +---------------------------------+
+                |        Add Services Used        |
+                +---------------------------------+""");
         System.out.println("""
                 [1] Prenatal Check-Up
                 [2] Ultrasound (Pregnancy)

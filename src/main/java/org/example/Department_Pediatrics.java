@@ -6,7 +6,11 @@ public class Department_Pediatrics extends ServicesUsed{
     public String addServices() {
         String departmentName = "Pediatrics";
         String serviceUsed;
-        System.out.println("=== Add Services Used ===");
+        System.out.println("""
+                
+                +---------------------------------+
+                |        Add Services Used        |
+                +---------------------------------+""");
         System.out.println("""
                 [1] Pediatric Consultation
                 [2] Immunization (per vaccine)

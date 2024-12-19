@@ -11,7 +11,11 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     private int CheckIfPatientIdExists() {
-        System.out.println("=== Add Patient Details ===");
+        System.out.println("""
+                
+                +=================================+
+                ║       Add Patient Details       ║
+                +=================================+""");
         System.out.println("Enter Patient ID");
         System.out.print("> ");
 
@@ -28,10 +32,15 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     private void AddPatientDetails() {
-        System.out.println("=== Add Patient Details ===");
+        System.out.println("""
+                
+                +=================================+
+                ║       Add Patient Details       ║
+                +=================================+""");
         System.out.println("ID   : " + selectedId);
         System.out.println("Name : " + "(patient name)"); // yung pangalan ay manggagaling from database
         System.out.println("""
+        ===================================
         Please select an option:
         [1] Add Department and Services
         [2] Add Prescribed Medicine
@@ -61,7 +70,11 @@ public class PatientDetails extends PatientDetailsTemplate {
 
     @Override
     void AddDepartmentAndServices() {
-        System.out.println("=== Select Department Visited ===");
+        System.out.println("""
+                
+                +=================================+
+                ║    Select Department Visited    ║
+                +=================================+""");
         System.out.println("""
                 Please select an option:
                 [1]  General Medicine
@@ -138,29 +151,38 @@ public class PatientDetails extends PatientDetailsTemplate {
             default:
                 break;
         }
-        System.out.println("Department and Service successfully added to patient");
+        System.out.println("\nDepartment and Service successfully added to patient\n");
         AddPatientDetails();
     }
 
     @Override
     void AddMedicine() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=== Add Prescribed Medicine ===");
+        System.out.println("""
+                
+                +=================================+
+                ║     Add Prescribed Medicine     ║
+                +=================================+""");
         System.out.println("How many prescribed medicine do you want to add?");
         System.out.print("> ");
         int numberOfMedicine = scanner.nextInt();
         scanner.nextLine();
         for(int i = 0; i < numberOfMedicine; i++){
-            System.out.println("=== Add Prescribed Medicine ===");
-            System.out.println("Name : ");
+            System.out.println("""
+                
+                ===================================""");
+            System.out.println("Medicine Name : ");
             String name = scanner.nextLine();
+            System.out.println("Quantity : ");
+            int quantity = scanner.nextInt();
             System.out.println("Total Cost : ");
             int totalCost = scanner.nextInt();
             scanner.nextLine();
+            System.out.println("===================================");
             // dito na yung pag-add nung name of medicine at total cost sa database
         }
-        System.out.println("Prescribed medicines successfully added!");
-        AddDepartmentAndServices();
+        System.out.println("\nPrescribed medicines successfully added!\n");
+        AddPatientDetails();
     }
 
     @Override

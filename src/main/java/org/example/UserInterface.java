@@ -19,7 +19,13 @@ public class UserInterface {
 
     public static void MainMenu(){
         ConsoleClear();
-        System.out.println("=== Welcome to Hospital Billing System ==="); // not final UI
+        System.out.println("""
+                
+                +---------------------------------------------------------------+
+                | ╦ ╦╔═╗╔═╗╔═╗╦╔╦╗╔═╗╦    ╔╗ ╦╦  ╦  ╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔╦╗╔═╗╔╦╗ |
+                | ╠═╣║ ║╚═╗╠═╝║ ║ ╠═╣║    ╠╩╗║║  ║  ║║║║║ ╦  ╚═╗╚╦╝╚═╗ ║ ║╣ ║║║ |
+                | ╩ ╩╚═╝╚═╝╩  ╩ ╩ ╩ ╩╩═╝  ╚═╝╩╩═╝╩═╝╩╝╚╝╚═╝  ╚═╝ ╩ ╚═╝ ╩ ╚═╝╩ ╩ |
+                +---------------------------------------------------------------+"""); // not final UI
         System.out.println(
                      """
                         [1] Manage Patient Records

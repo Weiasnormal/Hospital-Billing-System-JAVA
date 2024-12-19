@@ -6,7 +6,11 @@ public class Department_Dental extends ServicesUsed {
     public String addServices() {
         String departmentName = "Dental";
         String serviceUsed;
-        System.out.println("=== Add Services Used ===");
+        System.out.println("""
+                
+                +---------------------------------+
+                |        Add Services Used        |
+                +---------------------------------+""");
         System.out.println("""
                 [1] Dental Check-Up
                 [2] Tooth Extraction

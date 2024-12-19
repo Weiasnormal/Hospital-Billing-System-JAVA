@@ -7,7 +7,11 @@ public class Department_Radiology extends ServicesUsed{
     public String addServices() {
         String departmentName = "Radiology";
         String serviceUsed;
-        System.out.println("=== Add Services Used ===");
+        System.out.println("""
+                
+                +---------------------------------+
+                |        Add Services Used        |
+                +---------------------------------+""");
         System.out.println("""
                 [1] X-Ray
                 [2] CT Scan

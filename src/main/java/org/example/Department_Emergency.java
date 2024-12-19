@@ -7,7 +7,11 @@ public class Department_Emergency extends ServicesUsed{
     public String addServices() {
         String departmentName = "Emergency";
         String serviceUsed;
-        System.out.println("=== Add Services Used ===");
+        System.out.println("""
+                
+                +---------------------------------+
+                |        Add Services Used        |
+                +---------------------------------+""");
         System.out.println("""
                 [1] Emergency Room Admission
                 [2] First Aid Treatment
