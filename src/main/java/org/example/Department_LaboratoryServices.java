@@ -7,11 +7,12 @@ public class Department_LaboratoryServices extends ServicesUsed{
     public String addServices() {
         String departmentName = "Laboratory Services";
         String serviceUsed;
-        System.out.println("""
+        System.out.println("\u001B[31m"+
+                """
                 
                 +---------------------------------+
                 |        Add Services Used        |
-                +---------------------------------+""");
+                +---------------------------------+""" + "\u001B[0m");
         System.out.println("""
                 [1] Complete Blood Count (CBC)
                 [2] Urine Analysis

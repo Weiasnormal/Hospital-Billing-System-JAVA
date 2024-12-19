@@ -5,11 +5,12 @@ import java.util.Scanner;
 public class PatientInformation extends PatientInformationTemplate {
     @Override
     void PatientMain(){
-        System.out.println("""
+        System.out.println("\u001B[31m" +
+                """
                 
                 +======================================+
                 ║    Manage Patient Medical Records    ║
-                +======================================+""");
+                +======================================+""" + "\u001B[0m");
         System.out.println("""
         Please select an option:
         [1] Register a Patient
@@ -37,7 +38,7 @@ public class PatientInformation extends PatientInformationTemplate {
 
     @Override
     void RegisterNewPatient() {
-        System.out.println("\n████ Register a Patient ████");
+        System.out.println( "\u001B[31m"+ "\n████ Register a Patient ████" + "\u001B[0m");
         System.out.println("""
         [1] Continue
         [2] Back""");
@@ -54,11 +55,12 @@ public class PatientInformation extends PatientInformationTemplate {
         // if the 'input' is 1, the _registerNewPatient() method will continue
         // and ask the user to input the patient information
         UserInterface.ConsoleClear();
-        System.out.println("""
+        System.out.println("\u001B[31m" +
+                """
                 
                 +=================================+
                 ║    Input Patient Information    ║
-                +=================================+""");
+                +=================================+""" + "\u001B[0m");
         System.out.print("Name: ");
         String name = scanner.nextLine();
         System.out.print("Age: ");

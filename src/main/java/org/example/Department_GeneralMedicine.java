@@ -7,11 +7,12 @@ public class Department_GeneralMedicine extends ServicesUsed{
     public String addServices() {
         String departmentName = "General Medicine";
         String serviceUsed;
-        System.out.println("""
+        System.out.println("\u001B[31m"+
+                """
                 
                 +---------------------------------+
                 |        Add Services Used        |
-                +---------------------------------+""");
+                +---------------------------------+""" + "\u001B[0m");
         System.out.println("""
                 [1] Consultation
                 [2] Blood Test

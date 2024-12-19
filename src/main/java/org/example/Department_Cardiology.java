@@ -11,11 +11,12 @@ public class Department_Cardiology extends ServicesUsed{
         Scanner scanner = new Scanner(System.in);
 
         do {
-            System.out.println("""
+            System.out.println("\u001B[31m"+
+                """
                 
                 +---------------------------------+
                 |        Add Services Used        |
-                +---------------------------------+""");
+                +---------------------------------+""" + "\u001B[0m");
             System.out.println("""
                 [1] Cardiology Consultation
                 [2] ECG (Electrocardiogram)

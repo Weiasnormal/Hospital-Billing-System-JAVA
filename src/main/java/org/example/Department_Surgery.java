@@ -6,11 +6,12 @@ public class Department_Surgery extends ServicesUsed{
     public String addServices() {
         String departmentName = "Surgery";
         String serviceUsed;
-        System.out.println("""
+        System.out.println("\u001B[31m"+
+                """
                 
                 +---------------------------------+
                 |        Add Services Used        |
-                +---------------------------------+""");
+                +---------------------------------+""" + "\u001B[0m");
         System.out.println("""
                 [1] Minor Surgery
                 [2] Major Surgery

@@ -7,11 +7,12 @@ public class Department_Emergency extends ServicesUsed{
     public String addServices() {
         String departmentName = "Emergency";
         String serviceUsed;
-        System.out.println("""
+        System.out.println("\u001B[31m"+
+                """
                 
                 +---------------------------------+
                 |        Add Services Used        |
-                +---------------------------------+""");
+                +---------------------------------+""" + "\u001B[0m");
         System.out.println("""
                 [1] Emergency Room Admission
                 [2] First Aid Treatment

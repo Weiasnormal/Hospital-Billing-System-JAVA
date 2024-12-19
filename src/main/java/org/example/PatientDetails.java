@@ -11,11 +11,13 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     private int CheckIfPatientIdExists() {
-        System.out.println("""
+        System.out.println(
+                "\u001B[31m"+
+                """
                 
                 +=================================+
                 ║       Add Patient Details       ║
-                +=================================+""");
+                +=================================+"""+ "\u001B[0m");
         System.out.println("Enter Patient ID");
         System.out.print("> ");
 
@@ -32,11 +34,13 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     private void AddPatientDetails() {
-        System.out.println("""
+        System.out.println(
+                "\u001B[31m"+
+                """
                 
                 +=================================+
                 ║       Add Patient Details       ║
-                +=================================+""");
+                +=================================+""" + "\u001B[0m");
         System.out.println("ID   : " + selectedId);
         System.out.println("Name : " + "(patient name)"); // yung pangalan ay manggagaling from database
         System.out.println("""
@@ -70,11 +74,13 @@ public class PatientDetails extends PatientDetailsTemplate {
 
     @Override
     void AddDepartmentAndServices() {
-        System.out.println("""
+        System.out.println(
+                "\u001B[31m"+
+                """
                 
                 +=================================+
                 ║    Select Department Visited    ║
-                +=================================+""");
+                +=================================+""" + "\u001B[0m");
         System.out.println("""
                 Please select an option:
                 [1]  General Medicine
@@ -158,11 +164,13 @@ public class PatientDetails extends PatientDetailsTemplate {
     @Override
     void AddMedicine() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("""
+        System.out.println(
+                "\u001B[31m" +
+                """
                 
                 +=================================+
                 ║     Add Prescribed Medicine     ║
-                +=================================+""");
+                +=================================+""" + "\u001B[0m" );
         System.out.println("How many prescribed medicine do you want to add?");
         System.out.print("> ");
         int numberOfMedicine = scanner.nextInt();
@@ -202,6 +210,6 @@ public class PatientDetails extends PatientDetailsTemplate {
         // * remove a Prescribed Medicine
         // * return to AddPatientDetails() method
 
-        // si mhartz na rito, hehe
+        // si mhartz na rito, hehe, jamal will take it away- jamaaal kakain na!!
     }
 }
