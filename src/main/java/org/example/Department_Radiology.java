@@ -14,6 +14,7 @@ public class Department_Radiology extends ServicesUsed{
                 [3] MRI
                 [4] Ultrasound
                 [5] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

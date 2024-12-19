@@ -14,6 +14,7 @@ public class ServicesUsed {
                 [2] Service 2
                 [3] Service 3
                 [4] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

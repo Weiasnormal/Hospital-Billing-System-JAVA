@@ -13,6 +13,7 @@ public class Department_Maternity extends ServicesUsed{
                 [3] Delivery (Normal)
                 [4] Delivery (Cesarean)
                 [5] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

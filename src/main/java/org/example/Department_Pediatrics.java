@@ -12,6 +12,7 @@ public class Department_Pediatrics extends ServicesUsed{
                 [2] Immunization (per vaccine)
                 [3] Growth Check-Up
                 [4] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

@@ -13,6 +13,7 @@ public class Department_Dental extends ServicesUsed {
                 [3] Teeth Cleaning
                 [4] Root Canal Treatment
                 [5] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

@@ -3,11 +3,18 @@ package org.example;
 import java.util.Scanner;
 
 public class PatientDetails extends PatientDetailsTemplate {
+    int selectedId;
     @Override
     void DeptServiceMain() {
-        int selectedId = CheckIfPatientIdExists(); // check muna if patient id exists; no >> return main menu; yes >> hold ID and continue program
+        Patient patient = new Patient();
+        selectedId = patient.CheckIfPatientIdExists(); // check muna if patient id exists; no >> return main menu; yes >> hold ID and continue program
+        AddPatientDetails();
+    }
 
+    private void AddPatientDetails() {
         System.out.println("=== Add Patient Details ===");
+        System.out.println("ID   : " + selectedId);
+        System.out.println("Name : " + "(patient name)");
         System.out.println("""
         Please select an option:
         [1] Add Department and Services
@@ -39,39 +46,22 @@ public class PatientDetails extends PatientDetailsTemplate {
         }
     }
 
-    private int CheckIfPatientIdExists() {
-        System.out.println("=== Add Patient Details ===");
-        System.out.println("Enter Patient ID");
-        System.out.print("> ");
-
-        Scanner scanner = new Scanner(System.in);
-        int patientId = scanner.nextInt();
-        scanner.nextLine();
-
-        Database database = new Database();
-        boolean exists = database.GetUserInformation(patientId);
-        if (!exists) {
-            UserInterface.MainMenu();
-        }
-        return patientId;
-    }
-
     @Override
     void AddDepartmentAndServices() {
-        System.out.println("=== Select Deparment Visited ===");
+        System.out.println("=== Select Department Visited ===");
         System.out.println("""
                 Please select an option:
-                [1]  General Medicine
-                [2]  Cardiology
-                [3]  Radiology
-                [4]  Orthopedics
-                [5]  Emergency
-                [6]  Laboratory Services
-                [7]  Surgery
-                [8]  Pediatrics
-                [9]  Maternity
+                [01] General Medicine
+                [02] Cardiology
+                [03] Radiology
+                [04] Orthopedics
+                [05] Emergency
+                [06] Laboratory Services
+                [07] Surgery
+                [08] Pediatrics
+                [09] Maternity
                 [10] Dental
-                [11] Return""");
+                [11] Back""");
         System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
@@ -129,27 +119,41 @@ public class PatientDetails extends PatientDetailsTemplate {
                 selected = servicesUsed.addServices();
                 servicesUsed.InsertToDatabase(selected);
                 break;
+            case 11:
+                AddPatientDetails();
+                break;
             default:
                 break;
         }
-        System.out.println("Deparment Visited and Services Used has been successfully added!"); // temporary only
+
+        System.out.println("Department and Service successfully added to patient");
+        AddPatientDetails();
     }
 
     @Override
     void AddMedicine() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("=== Add Prescribed Medicine ===");
-        System.out.println("Name : ");
-        String name = scanner.nextLine();
-        System.out.println("Total Cost : ");
-        int totalCost = scanner.nextInt();
+        System.out.println("How many prescribed medicine do you want to add?");
+        System.out.print("> ");
+        int numberOfMedicine = scanner.nextInt();
         scanner.nextLine();
-
-        // hindi pa ito tapos
+        for(int i = 0; i < numberOfMedicine; i++){
+            System.out.println("=== Add Prescribed Medicine ===");
+            System.out.println("Name : ");
+            String name = scanner.nextLine();
+            System.out.println("Total Cost : ");
+            int totalCost = scanner.nextInt();
+            scanner.nextLine();
+            // add yung name nung medicine at total cost sa database
+        }
+        System.out.println("Prescribed medicines successfully added!");
+        AddDepartmentAndServices();
     }
 
     @Override
     void ViewAllEntries() {
+        System.out.println(selectedId);
         // bele ang mangyayari rito ay ipapakita sa console/terminal yung personal information nung patient
         // pati na rin yung mga deparments visited, services, at prescribed medicine
 

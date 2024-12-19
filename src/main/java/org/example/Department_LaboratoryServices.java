@@ -14,6 +14,7 @@ public class Department_LaboratoryServices extends ServicesUsed{
                 [3] Cholesterol Test
                 [4] COVID-19 Test
                 [5] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

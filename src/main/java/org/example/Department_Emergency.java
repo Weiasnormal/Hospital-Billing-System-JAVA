@@ -14,6 +14,7 @@ public class Department_Emergency extends ServicesUsed{
                 [3] Minor Surgery
                 [4] Ambulance Service
                 [5] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

@@ -13,6 +13,7 @@ public class Department_GeneralMedicine extends ServicesUsed{
                 [2] Blood Test
                 [3] Blood Pressure Check
                 [4] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

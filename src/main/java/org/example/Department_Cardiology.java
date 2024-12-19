@@ -15,6 +15,7 @@ public class Department_Cardiology extends ServicesUsed{
                 [3] Echocardiogram
                 [4] Stress Test
                 [5] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

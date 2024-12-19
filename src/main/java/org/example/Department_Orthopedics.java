@@ -14,6 +14,7 @@ public class Department_Orthopedics extends ServicesUsed{
                 [3] Fracture Treatment
                 [4] Physiotherapy Session
                 [5] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

@@ -12,6 +12,7 @@ public class Department_Surgery extends ServicesUsed{
                 [2] Major Surgery
                 [3] Post-Surgery Care (per day)
                 [4] Back""");
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {
