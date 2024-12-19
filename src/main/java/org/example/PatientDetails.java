@@ -6,9 +6,25 @@ public class PatientDetails extends PatientDetailsTemplate {
     int selectedId;
     @Override
     void DeptServiceMain() {
-        Patient patient = new Patient();
-        selectedId = patient.CheckIfPatientIdExists(); // check muna if patient id exists; no >> return main menu; yes >> hold ID and continue program
+        selectedId = CheckIfPatientIdExists(); // check muna if patient id exists; no >> return main menu; yes >> hold ID and continue program
         AddPatientDetails();
+    }
+
+    public int CheckIfPatientIdExists() {
+        System.out.println("=== Add Patient Details ===");
+        System.out.println("Enter Patient ID");
+        System.out.print("> ");
+
+        Scanner scanner = new Scanner(System.in);
+        int patientId = scanner.nextInt();
+        scanner.nextLine();
+
+        Database database = new Database();
+        boolean exists = database.GetUserInformation(patientId);
+        if (!exists) {
+            UserInterface.MainMenu();
+        }
+        return patientId;
     }
 
     private void AddPatientDetails() {

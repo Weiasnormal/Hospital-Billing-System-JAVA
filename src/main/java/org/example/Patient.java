@@ -35,20 +35,4 @@ public class Patient extends Person {
         }
     }
 
-    public int CheckIfPatientIdExists() {
-        System.out.println("=== Add Patient Details ===");
-        System.out.println("Enter Patient ID");
-        System.out.print("> ");
-
-        Scanner scanner = new Scanner(System.in);
-        int patientId = scanner.nextInt();
-        scanner.nextLine();
-
-        Database database = new Database();
-        boolean exists = database.GetUserInformation(patientId);
-        if (!exists) {
-            UserInterface.MainMenu();
-        }
-        return patientId;
-    }
 }
