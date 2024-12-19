@@ -10,7 +10,7 @@ public class PatientDetails extends PatientDetailsTemplate {
         AddPatientDetails();
     }
 
-    public int CheckIfPatientIdExists() {
+    private int CheckIfPatientIdExists() {
         System.out.println("=== Add Patient Details ===");
         System.out.println("Enter Patient ID");
         System.out.print("> ");
@@ -30,7 +30,7 @@ public class PatientDetails extends PatientDetailsTemplate {
     private void AddPatientDetails() {
         System.out.println("=== Add Patient Details ===");
         System.out.println("ID   : " + selectedId);
-        System.out.println("Name : " + "(patient name)");
+        System.out.println("Name : " + "(patient name)"); // yung pangalan ay manggagaling from database
         System.out.println("""
         Please select an option:
         [1] Add Department and Services
@@ -46,19 +46,16 @@ public class PatientDetails extends PatientDetailsTemplate {
         switch (option) {
             case 1:
                 AddDepartmentAndServices();
-                break;
             case 2:
                 AddMedicine();
-                break;
             case 3:
                 ViewAllEntries();
-                break;
+            case 4:
+                DeptServiceMain();
             case 5:
                 UserInterface.MainMenu();
-            case 4:
             default:
-                DeptServiceMain();
-                break;
+                AddPatientDetails();
         }
     }
 
@@ -67,15 +64,15 @@ public class PatientDetails extends PatientDetailsTemplate {
         System.out.println("=== Select Department Visited ===");
         System.out.println("""
                 Please select an option:
-                [01] General Medicine
-                [02] Cardiology
-                [03] Radiology
-                [04] Orthopedics
-                [05] Emergency
-                [06] Laboratory Services
-                [07] Surgery
-                [08] Pediatrics
-                [09] Maternity
+                [1]  General Medicine
+                [2]  Cardiology
+                [3]  Radiology
+                [4]  Orthopedics
+                [5]  Emergency
+                [6]  Laboratory Services
+                [7]  Surgery
+                [8]  Pediatrics
+                [9]  Maternity
                 [10] Dental
                 [11] Back""");
         System.out.print("> ");
@@ -141,7 +138,6 @@ public class PatientDetails extends PatientDetailsTemplate {
             default:
                 break;
         }
-
         System.out.println("Department and Service successfully added to patient");
         AddPatientDetails();
     }
@@ -161,7 +157,7 @@ public class PatientDetails extends PatientDetailsTemplate {
             System.out.println("Total Cost : ");
             int totalCost = scanner.nextInt();
             scanner.nextLine();
-            // add yung name nung medicine at total cost sa database
+            // dito na yung pag-add nung name of medicine at total cost sa database
         }
         System.out.println("Prescribed medicines successfully added!");
         AddDepartmentAndServices();
@@ -178,5 +174,12 @@ public class PatientDetails extends PatientDetailsTemplate {
         // * services
         // * prescribed medicine
         // ganan ang pagkakasunod-sunod nila
+
+        // tapos magkakaroon ng option si user:
+        // * remove a Department/Service
+        // * remove a Prescribed Medicine
+        // * return to AddPatientDetails() method
+
+        // si mhartz na rito, hehe
     }
 }
