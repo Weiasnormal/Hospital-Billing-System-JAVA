@@ -7,4 +7,5 @@ public class Person {
     public int Age;
     public String Gender;
     public String ContactNumber;
+    public String Address;
 }

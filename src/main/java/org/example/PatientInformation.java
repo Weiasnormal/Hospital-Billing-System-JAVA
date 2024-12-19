@@ -61,10 +61,15 @@ public class PatientInformation extends PatientInformationTemplate {
         String gender = scanner.nextLine();
         System.out.print("Contact Number : ");
         String contact_number = scanner.nextLine();
+        System.out.print("Address : ");
+        String address = scanner.nextLine();
 
-        Patient patient = new Patient(name, age, gender, contact_number);
+
+
+        Patient patient = new Patient(name, age, gender, contact_number, address);
         UserInterface.ConsoleClear();
-        patient.Validation();
+        boolean validate = patient.Validation();
+        patient.PatientDatabase(validate);
         UserInterface.MainMenu();
     }
 
