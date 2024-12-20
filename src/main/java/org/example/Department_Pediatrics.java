@@ -6,18 +6,22 @@ public class Department_Pediatrics extends ServicesUsed{
     public double addServices() {
         String departmentName = "Pediatrics";
         String serviceUsed;
-        System.out.println("\u001B[31m"+
+        System.out.println("\033[1;96m" +
                 """
                 
-                +---------------------------------+
-                |        Add Services Used        |
-                +---------------------------------+""" + "\u001B[0m");
-        System.out.println("""
+                
+                +=====================================+"""+ "\033[1;33m" + """
+                
+                ║          Add Services Used          ║
+                """ + "\033[1;96m" +"""
+                +=====================================+""" + "\u001B[0m");
+        System.out.println("\033[1;97m" + """
                 [1] Pediatric Consultation
                 [2] Immunization (per vaccine)
                 [3] Growth Check-Up
-                [4] Back""");
-        System.out.print("> ");
+                [4] Back
+                \f-------------------------------------\f""" + "\u001B[0m");
+        System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

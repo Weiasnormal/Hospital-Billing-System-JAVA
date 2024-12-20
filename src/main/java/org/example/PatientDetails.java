@@ -11,15 +11,17 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     private int CheckIfPatientIdExists() {
-        System.out.println(
-                "\u001B[31m"+
+        System.out.println("\033[1;96m" +
                 """
                 
-                +=================================+
-                ║       Add Patient Details       ║
-                +=================================+"""+ "\u001B[0m");
+                
+                +=====================================+"""+ "\033[1;33m" + """
+                
+                ║         Add Patient Details         ║
+                """ + "\033[1;96m" +"""
+                +=====================================+""" + "\u001B[0m");
         System.out.println("Enter Patient ID");
-        System.out.print("> ");
+        System.out.print("⪀⫸ ");
 
         Scanner scanner = new Scanner(System.in);
         int patientId = scanner.nextInt();
@@ -34,24 +36,27 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     private void AddPatientDetails() {
-        System.out.println(
-                "\u001B[31m"+
+        System.out.println("\033[1;96m" +
                 """
                 
-                +=================================+
-                ║       Add Patient Details       ║
-                +=================================+""" + "\u001B[0m");
+                
+                +=====================================+"""+ "\033[1;33m" + """
+                
+                ║         Add Patient Details         ║
+                """ + "\033[1;96m" +"""
+                +=====================================+""" + "\u001B[0m");
         System.out.println("ID   : " + selectedId);
         System.out.println("Name : " + "(patient name)"); // yung pangalan ay manggagaling from database
-        System.out.println("""
-        ===================================
+        System.out.println("\033[1;97m" + """
+        \f-------------------------------------\f
         Please select an option:
         [1] Add Department and Services
         [2] Add Prescribed Medicine
         [3] View All Entries
         [4] Change Patient ID
-        [5] Return to Main Menu""");
-        System.out.print("> ");
+        [5] Return to Main Menu
+        \f-------------------------------------\f""" + "\u001B[0m");
+        System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         scanner.nextLine();
@@ -74,14 +79,16 @@ public class PatientDetails extends PatientDetailsTemplate {
 
     @Override
     void AddDepartmentAndServices() {
-        System.out.println(
-                "\u001B[31m"+
+        System.out.println("\033[1;96m" +
                 """
                 
-                +=================================+
-                ║    Select Department Visited    ║
-                +=================================+""" + "\u001B[0m");
-        System.out.println("""
+                
+                +=====================================+"""+ "\033[1;33m" + """
+                
+                ║      Select Department Visited      ║
+                """ + "\033[1;96m" +"""
+                +=====================================+""" + "\u001B[0m");
+        System.out.println("\033[1;97m" + """
                 Please select an option:
                 [1]  General Medicine
                 [2]  Cardiology
@@ -93,8 +100,9 @@ public class PatientDetails extends PatientDetailsTemplate {
                 [8]  Pediatrics
                 [9]  Maternity
                 [10] Dental
-                [11] Back""");
-        System.out.print("> ");
+                [11] Back
+                \f-------------------------------------\f""" + "\u001B[0m");
+        System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         DB db = new DB();
@@ -152,7 +160,7 @@ public class PatientDetails extends PatientDetailsTemplate {
             AddDepartmentAndServices();
         }
         db.IInsertToDatabase(selected, selectedId);
-        System.out.println("\nDepartment and Service successfully added to patient\n");
+        System.out.println("\n" + "\033[1;32m" + "Department and Service successfully added to patient\n");
         AddPatientDetails();
 
     }
@@ -160,32 +168,32 @@ public class PatientDetails extends PatientDetailsTemplate {
     @Override
     void AddMedicine() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println(
-                "\u001B[31m" +
+        System.out.println("\033[1;96m" +
                 """
                 
-                +=================================+
-                ║     Add Prescribed Medicine     ║
-                +=================================+""" + "\u001B[0m" );
+                
+                +===============================================+"""+ "\033[1;33m" + """
+                
+                ║           Add  Prescribed  Medicine           ║
+                """ + "\033[1;96m" +"""
+                +===============================================+""" + "\u001B[0m");
         System.out.println("How many prescribed medicine do you want to add?");
-        System.out.print("> ");
+        System.out.print("⪀⫸ ");
         int numberOfMedicine = scanner.nextInt();
         scanner.nextLine();
         for(int i = 0; i < numberOfMedicine; i++){
-            System.out.println("""
-                
-                ===================================""");
-            System.out.println("Medicine Name : ");
+            System.out.println("\f-----------------------------------------------\f");
+            System.out.print("Medicine Name : ");
             String name = scanner.nextLine();
-            System.out.println("Quantity : ");
+            System.out.print("Quantity : ");
             int quantity = scanner.nextInt();
-            System.out.println("Total Cost : ");
+            System.out.print("Total Cost : ");
             int totalCost = scanner.nextInt();
             scanner.nextLine();
-            System.out.println("===================================");
+            System.out.println("\f-----------------------------------------------\f");
             // dito na yung pag-add nung name of medicine at total cost sa database
         }
-        System.out.println("\nPrescribed medicines successfully added!\n");
+        System.out.println("\n" + "\033[1;32m" + "Prescribed medicines successfully added!\n");
         AddPatientDetails();
     }
 

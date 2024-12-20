@@ -5,19 +5,23 @@ import java.util.Scanner;
 public class PatientInformation extends PatientInformationTemplate {
     @Override
     void PatientMain(){
-        System.out.println("\u001B[31m" +
+        System.out.println("\033[1;96m" +
                 """
                 
-                +======================================+
+                
+                +======================================+"""+ "\033[1;33m" + """
+                
                 ║    Manage Patient Medical Records    ║
+                """ + "\033[1;96m" +"""
                 +======================================+""" + "\u001B[0m");
-        System.out.println("""
+        System.out.println("\033[1;97m" + """
         Please select an option:
         [1] Register a Patient
         [2] View Patient List
         [3] Search for a Patient
-        [4] Return to Main Menu"""); // view all patients is only temporary here for testing
-        System.out.print("> ");
+        [4] Return to Main Menu""" + "\u001B[0m"); // view all patients is only temporary here for testing
+        System.out.println("\f--------------------------------------\f");
+        System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         switch(input){
@@ -38,32 +42,36 @@ public class PatientInformation extends PatientInformationTemplate {
 
     @Override
     void RegisterNewPatient() {
-        System.out.println( "\u001B[31m"+ "\n████ Register a Patient ████" + "\u001B[0m");
-        System.out.println("""
+        System.out.println( "\n" + "\033[1;93m" + "⫍⫍⫍⫍" + "\033[1;97m" +"   Register a Patient   " + "\033[1;93m" + "⫎⫎⫎⫎" + "\u001B[0m");
+        System.out.println("\033[1;97m" + """
         [1] Continue
-        [2] Back""");
-        System.out.print("> ");
+        [2] Back""" + "\u001B[0m");
+        System.out.println("\f-------------------------------------\f");
+        System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         if(!(input.equals("1") || input.equals("2"))) {
             RegisterNewPatient(); // serves as a error handler
         }
         if(input.equals("2")){
-            UserInterface.MainMenu(); // will return to main menu if 'input' is 2
+            PatientMain(); // will return to main menu if 'input' is 2
         }
 
         // if the 'input' is 1, the _registerNewPatient() method will continue
         // and ask the user to input the patient information
         UserInterface.ConsoleClear();
-        System.out.println("\u001B[31m" +
+        System.out.println("\033[1;96m" +
                 """
                 
-                +=================================+
-                ║    Input Patient Information    ║
-                +=================================+""" + "\u001B[0m");
+                
+                +=====================================+"""+ "\033[1;33m" + """
+                
+                ║      Input Patient Information      ║
+                """ + "\033[1;96m" +"""
+                +=====================================+""" + "\u001B[0m");
 
         System.out.print("Patient ID: ");
-        int ID = scanner.nextInt();
+        int ID = scanner.nextInt(); //no catch if not int is inputed
         scanner.nextLine(); // to prevent skipping the next ".nextLine()"
         System.out.print("Name: ");
         String name = scanner.nextLine();
@@ -86,7 +94,16 @@ public class PatientInformation extends PatientInformationTemplate {
 
     @Override
     void SearchPatient() {
-        System.out.print("\nSearch Patient ID : ");
+        System.out.println("\033[1;96m" +
+                """
+                
+                
+                +======================================+"""+ "\033[1;33m" + """
+                
+                ║      Search Patient Information      ║
+                """ + "\033[1;96m" +"""
+                +======================================+""" + "\u001B[0m");
+        System.out.print("Input Patient ID: ");
         Scanner scanner = new Scanner(System.in);
         int id = scanner.nextInt();
         Database database = new Database();

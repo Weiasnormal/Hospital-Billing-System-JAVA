@@ -19,28 +19,37 @@ public class UserInterface {
 
     public static void MainMenu(){
         ConsoleClear();
+
         System.out.println(
-                "\u001B[31m" +
+                "\033[1;96m" +
                         """
                         
-                        +---------------------------------------------------------------+
-                        | ╦ ╦╔═╗╔═╗╔═╗╦╔╦╗╔═╗╦    ╔╗ ╦╦  ╦  ╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔╦╗╔═╗╔╦╗ |
-                        | ╠═╣║ ║╚═╗╠═╝║ ║ ╠═╣║    ╠╩╗║║  ║  ║║║║║ ╦  ╚═╗╚╦╝╚═╗ ║ ║╣ ║║║ |
-                        | ╩ ╩╚═╝╚═╝╩  ╩ ╩ ╩ ╩╩═╝  ╚═╝╩╩═╝╩═╝╩╝╚╝╚═╝  ╚═╝ ╩ ╚═╝ ╩ ╚═╝╩ ╩ |
-                        +---------------------------------------------------------------+"""
+                        +-------------------------------------------------------------+
+                        |"""+ "\033[0;33m" + """ 
+                        ╦ ╦╔═╗╔═╗╔═╗╦╔╦╗╔═╗╦    ╔╗ ╦╦  ╦  ╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔╦╗╔═╗╔╦╗""" + "\033[1;96m" +"""
+                        |
+                        |"""+ "\033[0;33m" + """
+                        ╠═╣║ ║╚═╗╠═╝║ ║ ╠═╣║    ╠╩╗║║  ║  ║║║║║ ╦  ╚═╗╚╦╝╚═╗ ║ ║╣ ║║║"""+ "\033[1;96m" +"""
+                        |
+                        |"""+ "\033[0;33m" + """
+                        ╩ ╩╚═╝╚═╝╩  ╩ ╩ ╩ ╩╩═╝  ╚═╝╩╩═╝╩═╝╩╝╚╝╚═╝  ╚═╝ ╩ ╚═╝ ╩ ╚═╝╩ ╩""" + "\033[1;96m" +"""
+                        |
+                        +-------------------------------------------------------------+"""
         + "\u001B[0m"); // not final UI
         System.out.println(
-                 //"\u001B[35m" +
+                 "\033[1;97m" +
                         """
                         [1] Manage Patient Records
                         [2] Add Patient Details
                         [3] Generate and Display the Bill
                         [4] Process a Payment
-                        [5] Exit the System""" //+ "\u001B[0m"
+                        [5] Exit the System""" + "\u001B[0m"
                 );
-        System.out.print("> ");
+        System.out.println("\f--------------------------------------\f");
+        System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
+
         ConsoleClear();
         PatientInformation patient_service = new PatientInformation();
         switch(input){

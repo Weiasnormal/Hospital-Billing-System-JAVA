@@ -7,19 +7,23 @@ public class Department_Orthopedics extends ServicesUsed{
     public double addServices() {
         String departmentName = "Orthopedics";
         String serviceUsed;
-        System.out.println("\u001B[31m"+
+        System.out.println("\033[1;96m" +
                 """
                 
-                +---------------------------------+
-                |        Add Services Used        |
-                +---------------------------------+""" + "\u001B[0m");
-        System.out.println("""
+                
+                +=====================================+"""+ "\033[1;33m" + """
+                
+                ║          Add Services Used          ║
+                """ + "\033[1;96m" +"""
+                +=====================================+""" + "\u001B[0m");
+        System.out.println("\033[1;97m" + """
                 [1] Orthopedic Consultation
                 [2] Bone X-Ray
                 [3] Fracture Treatment
                 [4] Physiotherapy Session
-                [5] Back""");
-        System.out.print("> ");
+                [5] Back
+                \f-------------------------------------\f""" + "\u001B[0m");
+        System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {

@@ -7,19 +7,23 @@ public class Department_LaboratoryServices extends ServicesUsed{
     public double addServices() {
         String departmentName = "Laboratory Services";
         String serviceUsed;
-        System.out.println("\u001B[31m"+
+        System.out.println("\033[1;96m" +
                 """
                 
-                +---------------------------------+
-                |        Add Services Used        |
-                +---------------------------------+""" + "\u001B[0m");
-        System.out.println("""
+                
+                +=====================================+"""+ "\033[1;33m" + """
+                
+                ║          Add Services Used          ║
+                """ + "\033[1;96m" +"""
+                +=====================================+""" + "\u001B[0m");
+        System.out.println("\033[1;97m" + """
                 [1] Complete Blood Count (CBC)
                 [2] Urine Analysis
                 [3] Cholesterol Test
                 [4] COVID-19 Test
-                [5] Back""");
-        System.out.print("> ");
+                [5] Back
+                \f-------------------------------------\f""" + "\u001B[0m");
+        System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
         switch (option) {
