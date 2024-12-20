@@ -97,59 +97,50 @@ public class PatientDetails extends PatientDetailsTemplate {
         System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
+        DB db = new DB();
         scanner.nextLine();
         ServicesUsed servicesUsed;
-        String selected;
+        double selected = 0;
         switch (option) {
             case 1:
                 servicesUsed = new Department_GeneralMedicine();
                 selected = servicesUsed.addServices();
-                servicesUsed.InsertToDatabase(selected);
                 break;
             case 2:
                 servicesUsed = new Department_Cardiology();
                 selected = servicesUsed.addServices();
-                servicesUsed.InsertToDatabase(selected);
                 break;
             case 3:
                 servicesUsed = new Department_Radiology();
                 selected = servicesUsed.addServices();
-                servicesUsed.InsertToDatabase(selected);
                 break;
             case 4:
                 servicesUsed = new Department_Orthopedics();
                 selected = servicesUsed.addServices();
-                servicesUsed.InsertToDatabase(selected);
                 break;
             case 5:
                 servicesUsed = new Department_Emergency();
                 selected = servicesUsed.addServices();
-                servicesUsed.InsertToDatabase(selected);
                 break;
             case 6:
                 servicesUsed = new Department_LaboratoryServices();
                 selected = servicesUsed.addServices();
-                servicesUsed.InsertToDatabase(selected);
                 break;
             case 7:
                 servicesUsed = new Department_Surgery();
                 selected = servicesUsed.addServices();
-                servicesUsed.InsertToDatabase(selected);
                 break;
             case 8:
                 servicesUsed = new Department_Pediatrics();
                 selected = servicesUsed.addServices();
-                servicesUsed.InsertToDatabase(selected);
                 break;
             case 9:
                 servicesUsed = new Department_Maternity();
                 selected = servicesUsed.addServices();
-                servicesUsed.InsertToDatabase(selected);
                 break;
             case 10:
                 servicesUsed = new Department_Dental();
                 selected = servicesUsed.addServices();
-                servicesUsed.InsertToDatabase(selected);
                 break;
             case 11:
                 AddPatientDetails();
@@ -157,8 +148,13 @@ public class PatientDetails extends PatientDetailsTemplate {
             default:
                 break;
         }
+        if(!db.ValidationToDatabase(selected,selectedId)){
+            AddDepartmentAndServices();
+        }
+        db.IInsertToDatabase(selected, selectedId);
         System.out.println("\nDepartment and Service successfully added to patient\n");
         AddPatientDetails();
+
     }
 
     @Override

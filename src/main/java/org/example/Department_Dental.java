@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Department_Dental extends ServicesUsed {
     @Override
-    public String addServices() {
+    public double addServices() {
         String departmentName = "Dental";
         String serviceUsed;
         System.out.println("\u001B[31m"+
@@ -24,16 +24,16 @@ public class Department_Dental extends ServicesUsed {
         switch (option) {
             case 1:
                 serviceUsed = "Dental Check-Up";
-                return departmentName + " , " + serviceUsed;
+                return 10.1;
             case 2:
                 serviceUsed = "Tooth Extraction";
-                return departmentName + " , " + serviceUsed;
+                return 10.2;
             case 3:
                 serviceUsed = "Teeth Cleaning";
-                return departmentName + " , " + serviceUsed;
+                return 10.3;
             case 4:
                 serviceUsed = "Root Canal Treatment";
-                return departmentName + " , " + serviceUsed;
+                return 10.4;
             case 5:
                 PatientDetails patientDetails = new PatientDetails();
                 patientDetails.AddDepartmentAndServices();
@@ -41,6 +41,6 @@ public class Department_Dental extends ServicesUsed {
                 addServices();
                 break;
         }
-        return "";
+        return 0;
     }
 }

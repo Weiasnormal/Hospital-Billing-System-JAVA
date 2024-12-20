@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Department_Radiology extends ServicesUsed{
     @Override
-    public String addServices() {
+    public double addServices() {
         String departmentName = "Radiology";
         String serviceUsed;
         System.out.println("\u001B[31m"+
@@ -25,16 +25,16 @@ public class Department_Radiology extends ServicesUsed{
         switch (option) {
             case 1:
                 serviceUsed = "X-Ray";
-                return departmentName + " , " + serviceUsed;
+                return 3.1;
             case 2:
                 serviceUsed = "CT Scan";
-                return departmentName + " , " + serviceUsed;
+                return 3.2;
             case 3:
                 serviceUsed = "MRI";
-                return departmentName + " , " + serviceUsed;
+                return 3.3;
             case 4:
                 serviceUsed = "Ultrasound";
-                return departmentName + " , " + serviceUsed;
+                return 3.4;
             case 5:
                 PatientDetails patientDetails = new PatientDetails();
                 patientDetails.AddDepartmentAndServices();
@@ -42,6 +42,6 @@ public class Department_Radiology extends ServicesUsed{
                 addServices();
                 break;
         }
-        return "";
+        return 0;
     }
 }

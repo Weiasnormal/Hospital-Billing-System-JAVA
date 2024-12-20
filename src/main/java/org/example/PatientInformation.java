@@ -61,6 +61,10 @@ public class PatientInformation extends PatientInformationTemplate {
                 +=================================+
                 ║    Input Patient Information    ║
                 +=================================+""" + "\u001B[0m");
+
+        System.out.print("Patient ID: ");
+        int ID = scanner.nextInt();
+        scanner.nextLine(); // to prevent skipping the next ".nextLine()"
         System.out.print("Name: ");
         String name = scanner.nextLine();
         System.out.print("Age: ");
@@ -73,10 +77,10 @@ public class PatientInformation extends PatientInformationTemplate {
         System.out.print("Address: ");
         String address = scanner.nextLine();
 
-        Patient patient = new Patient(name, age, gender, contact_number, address);
+        Patient patient = new Patient(ID, name, age, gender, contact_number, address);
         UserInterface.ConsoleClear();
         boolean validate = patient.Validation();
-//        patient.PatientDatabase(validate);
+        patient.PatientDatabase(validate);
         UserInterface.MainMenu();
     }
 

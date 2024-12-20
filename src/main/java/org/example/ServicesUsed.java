@@ -5,7 +5,7 @@ package org.example;
 import java.util.Scanner;
 
 public class ServicesUsed {
-    public String addServices() {
+    public double addServices() {
         String departmentName = "Department Name";
         String serviceUsed;
         System.out.println("=== Add Services Used ===");
@@ -20,13 +20,13 @@ public class ServicesUsed {
         switch (option) {
             case 1:
                 serviceUsed = "Service 1";
-                return departmentName + " , " + serviceUsed;
+                return 1.1;
             case 2:
                 serviceUsed = "Service 2";
-                return departmentName + " , " + serviceUsed;
+                return 1.2;
             case 3:
                 serviceUsed = "Service 3";
-                return departmentName + " , " + serviceUsed;
+                return 1.3;
             case 4:
                 PatientDetails patientDetails = new PatientDetails();
                 patientDetails.AddDepartmentAndServices();
@@ -34,7 +34,7 @@ public class ServicesUsed {
                 addServices();
                 break;
         }
-        return "";
+        return 0;
     }
 
     public void InsertToDatabase(String name) {
