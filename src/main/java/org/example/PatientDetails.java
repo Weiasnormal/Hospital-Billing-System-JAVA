@@ -191,21 +191,8 @@ public class PatientDetails extends PatientDetailsTemplate {
 
     @Override
     void ViewAllEntries() {
-        System.out.println(selectedId);
-        // bele ang mangyayari rito ay ipapakita sa console/terminal yung personal information nung patient
-        // pati na rin yung mga deparments visited, services, at prescribed medicine
+        DB db = new DB();
+        db.FetchServices(selectedId);
 
-        // ang magiging format ay personal info muna ni patient, then yung mga
-        // * departments visited
-        // * services
-        // * prescribed medicine
-        // ganan ang pagkakasunod-sunod nila
-
-        // tapos magkakaroon ng option si user:
-        // * remove a Department/Service
-        // * remove a Prescribed Medicine
-        // * return to AddPatientDetails() method
-
-        // si mhartz na rito, hehe, jamal will take it away- jamaaal kakain na!!
     }
 }
