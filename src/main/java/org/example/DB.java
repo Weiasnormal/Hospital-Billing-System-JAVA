@@ -208,7 +208,8 @@ public class DB {
             // Check if there are results
             boolean hasResults = false;
 
-            System.out.println("Patient ID: " + Id);
+//            System.out.println("Patient ID: " + Id);
+            System.out.println("\n=== Department Visited and Services Used ===");
             System.out.println("---------------");
 
             while (resultSet.next()) {
@@ -219,10 +220,10 @@ public class DB {
                 double price = resultSet.getDouble("Price");
 
                 // Print the fetched service details
-                System.out.println("Service ID: " + serviceID);
-                System.out.println("Department: " + department);
-                System.out.println("Service Name: " + serviceName);
-                System.out.println("Price: " + price);
+                System.out.println("Service ID   : " + serviceID);
+                System.out.println("Department   : " + department);
+                System.out.println("Service Name : " + serviceName);
+                System.out.println("Price        : " + price);
                 System.out.println("---------------");
             }
 
@@ -254,7 +255,8 @@ public class DB {
         // Check if there are results
         boolean hasResults = false;
 
-        System.out.println("Patient ID: " + Id);
+//        System.out.println("Patient ID: " + Id);
+        System.out.println("\n=== Medicine ===");
         System.out.println("---------------");
 
         while (resultSet.next()) {
@@ -265,10 +267,10 @@ public class DB {
             int total_cost = resultSet.getInt("total_cost");
 
             // Print the fetched service details
-            System.out.println("Medicine ID: " + med_id);
-            System.out.println("Medicine Name: " + medicine_name);
-            System.out.println("Quantity: " + quantity);
-            System.out.println("price: " + total_cost);
+            System.out.println("Medicine ID   : " + med_id);
+            System.out.println("Medicine Name : " + medicine_name);
+            System.out.println("Quantity      : " + quantity);
+            System.out.println("price         : " + total_cost);
             System.out.println("---------------");
         }
 
@@ -326,6 +328,7 @@ public class DB {
     public void displayUserInformation(ResultSet resultSet)
     {
         try {
+            System.out.println("-------------------------------------");
             do
             {
                 int patientId = resultSet.getInt("patient_ID");
@@ -336,15 +339,13 @@ public class DB {
                 String address = resultSet.getString("address");
 
                 // Print the fetched service details
-
-                System.out.println("\n---------------");
                 System.out.println("Patient ID     : " + patientId);
                 System.out.println("Patient Name   : " + patientName);
                 System.out.println("Age            : " + age);
                 System.out.println("Gender         : " + gender);
                 System.out.println("Contact Number : " + contactNumber);
                 System.out.println("Address        : " + address);
-                System.out.println("\n---------------");
+                System.out.println("-------------------------------------");
             }while (resultSet.next());
         } catch (SQLException e) {
             throw new RuntimeException(e);

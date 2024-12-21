@@ -49,6 +49,8 @@ public class PatientDetails extends PatientDetailsTemplate {
                 ║         Add Patient Details         ║
                 """ + "\033[1;96m" +"""
                 +=====================================+""" + "\u001B[0m");
+        System.out.println("\033[1;97m-------------------------------------");
+        System.out.println("[Patient Information]");
         System.out.println("ID   : " + selectedId);
         System.out.println("Name : " + db.GetName(selectedId)); // yung pangalan ay manggagaling from database
         System.out.println("\033[1;97m" + """
@@ -206,6 +208,12 @@ public class PatientDetails extends PatientDetailsTemplate {
     @Override
     public void ViewAllEntries() {
         DB db = new DB();
+        System.out.println("=== Patient Information ===");
+        System.out.println("---------------");
+        System.out.println("ID   : " + selectedId);
+        System.out.println("Name : " + db.GetName(selectedId));
+        System.out.println("---------------");
+
         db.FetchServices(selectedId);
         db.FetchMedicine(selectedId);
         AddPatientDetails();

@@ -31,12 +31,12 @@ public class GenerateAndDisplayBill {
     public void PaymentBill() {
         DB db = new DB();
         Scanner sc = new Scanner(System.in);
-        System.out.println("What Patient ID?");
+        System.out.print("Patient ID : ");
         int ID = sc.nextInt();
         sc.nextLine();
-        System.out.println("What Method of Payment are you using?");
+        System.out.println("Method of Payment : ");
         String method = sc.nextLine();
-        System.out.println("Enter Payment Amount");
+        System.out.println("Payment Amount : ");
         double amount = sc.nextDouble();
         db.FinalBill(ID, method, amount, db.Billing(ID));
         UserInterface.MainMenu();

@@ -2,6 +2,7 @@ package org.example.Model;
 import org.example.DB;
 import org.example.UserInterface;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -30,16 +31,14 @@ public class PatientInformation extends PatientInformationTemplate {
         switch(input){
             case "1":
                 RegisterNewPatient();
-                break;
             case "2":
                 ViewAllPatients();
-                break;
             case "3":
                 SearchPatient();
-                break;
             case "4":
                 UserInterface.MainMenu();
-                break;
+            default:
+                PatientMain();
         }
     }
 
@@ -63,6 +62,11 @@ public class PatientInformation extends PatientInformationTemplate {
         // if the 'input' is 1, the _registerNewPatient() method will continue
         // and ask the user to input the patient information
         UserInterface.ConsoleClear();
+        NewPatient();
+    }
+
+    private void NewPatient(){
+        Scanner scanner = new Scanner(System.in);
         System.out.println("\033[1;96m" +
                 """
                 
@@ -104,32 +108,44 @@ public class PatientInformation extends PatientInformationTemplate {
 
     @Override
     public void SearchPatient() {
-        System.out.println("\033[1;96m" +
-                """
-                
-                
+        try {
+            System.out.println("\033[1;96m" + """
                 +======================================+"""+ "\033[1;33m" + """
                 
                 ║      Search Patient Information      ║
                 """ + "\033[1;96m" +"""
                 +======================================+""" + "\u001B[0m");
-        System.out.print("Input Patient ID: ");
-        Scanner scanner = new Scanner(System.in);
-        int id = scanner.nextInt();
+            System.out.print("Enter Patient ID: ");
+            Scanner scanner = new Scanner(System.in);
+            String id = scanner.nextLine();
 
+            if(id == null || Integer.parseInt(id) < 1) {
+                System.out.println("Input invalid, please enter a numeric ID.");
+                SearchPatient();
+            }
 
-        DB db = new DB();
-        db.GetUserInformation(id);
-        UserInterface.MainMenu();
+            DB db = new DB();
+            db.GetUserInformation(Integer.parseInt(id));
+            PatientMain();
+        }
+        catch (InputMismatchException e){
+            System.out.println("Input invalid, please enter a numeric ID.");
+            SearchPatient();
+        }
+        catch (NumberFormatException e){
+            System.out.println("Input invalid, please enter a numeric ID.");
+            SearchPatient();
+        }
     }
 
     @Override
     public void ViewAllPatients() {
         DB db = new DB();
         Scanner scanner = new Scanner(System.in);
+        System.out.println("=== Patient List ===");
         db.GetUserInformation();
         System.out.println("Press enter to continue...");
         scanner.nextLine(); // if enter key is pressed, it will continue and execute the next line of code
-        UserInterface.MainMenu();
+        PatientMain();
     }
 }
