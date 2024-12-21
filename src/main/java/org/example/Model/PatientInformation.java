@@ -91,12 +91,15 @@ public class PatientInformation extends PatientInformationTemplate {
 
             Patient patient = new Patient(ID, name, age, gender, contact_number, address);
             UserInterface.ConsoleClear();
-            boolean validate = patient.Validation();
+            boolean isValid = patient.Validation();
             DB db = new DB();
-            db.InsertToDatabase(validate, ID, name, age, gender, contact_number, address);
+            db.InsertToDatabase(isValid, ID, name, age, gender, contact_number, address);
             UserInterface.MainMenu();
         }
-        catch (InputMismatchException e){}
+        catch (InputMismatchException e){
+            System.out.println("Input invalid, try again.");
+            PatientMain();
+        }
     }
 
     @Override

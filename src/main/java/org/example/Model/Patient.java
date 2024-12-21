@@ -15,10 +15,6 @@ public class Patient extends Person {
         Address = address;
     }
 
-    public void PatientDatabase(boolean check) {
-
-    }
-
     public boolean Validation(){
         DB db = new DB();
         try {

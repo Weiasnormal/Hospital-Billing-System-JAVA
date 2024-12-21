@@ -204,5 +204,8 @@ public class PatientDetails extends PatientDetailsTemplate {
         DB db = new DB();
         db.FetchServices(selectedId);
 
+        // magkakaroon pa rito ng option si user kung may gusto ba siyang tanggalin sa list of entries
+
+        AddPatientDetails();
     }
 }
