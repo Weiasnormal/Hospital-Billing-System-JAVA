@@ -144,6 +144,40 @@ public class DB {
         return exists;
     }
 
+    public void DepartmentServicesDelete(int patientId, int mstId) {
+        // Message to show the result of the operation
+        String message = "\n\033[1;32mDepartment and Service successfully removed\n";
+
+        try {
+            // Check if the department and service exist for the patient
+            String query = "SELECT * FROM MedicalServices WHERE patient_ID = ? AND services_ID = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, patientId);
+            preparedStatement.setDouble(2, mstId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                message = "Department and service do not exist for this patient.";
+            } else {
+                // Delete the record if it exists
+                String deleteQuery = "DELETE FROM MedicalServices WHERE patient_ID = ? AND services_ID = ?";
+                PreparedStatement deleteStatement = con.prepareStatement(deleteQuery);
+                deleteStatement.setInt(1, patientId);
+                deleteStatement.setDouble(2, mstId);
+                deleteStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            message = "Error during database deletion: " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        // Print the result message
+        System.out.println(message);
+    }
+
+
+
     public void FetchServices(int Id) {
         // view all entries of department & services and medicine added to a patient
         try {
@@ -203,6 +237,55 @@ public class DB {
 
 
     }
+
+
+    public void FetchMedicine(int Id){try {
+        con.setAutoCommit(true);
+        Statement statement = con.createStatement();
+        String fetchings = "SELECT * FROM MedicineExpenses WHERE patient_id = ?";
+
+        PreparedStatement preparedStatement = con.prepareStatement(fetchings);
+
+        // Set the patient ID
+        preparedStatement.setInt(1, Id); // 'Id' should be a variable with the patient ID to search for.
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        // Check if there are results
+        boolean hasResults = false;
+
+        System.out.println("Patient ID: " + Id);
+        System.out.println("---------------");
+
+        while (resultSet.next()) {
+            hasResults = true;
+            int med_id = resultSet.getInt("med_id");
+            String medicine_name = resultSet.getString("medicine_name");
+            int quantity = resultSet.getInt("quantity");
+            int total_cost = resultSet.getInt("total_cost");
+
+            // Print the fetched service details
+            System.out.println("Medicine ID: " + med_id);
+            System.out.println("Medicine Name: " + medicine_name);
+            System.out.println("Quantity: " + quantity);
+            System.out.println("price: " + total_cost);
+            System.out.println("---------------");
+        }
+
+        if (!hasResults) {
+            System.out.println("No services found for patient ID: " + Id);
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error during database insert: " + e.getMessage());
+        e.printStackTrace();
+        }
+
+    }
+
+
+
+
 
     public void GetUserInformation()
     {
@@ -290,6 +373,36 @@ public class DB {
             return null; // Han
         }
     }
+
+
+    public void MedicineExpenses(String name, int SelectedID, int quantity, int totalcost){
+
+        try {
+            con.setAutoCommit(true);
+            Statement statement = con.createStatement();
+            String insertQuery = """
+            
+                    INSERT INTO MedicineExpenses (patient_id, medicine_name, quantity, total_cost)
+                                VALUES (?, ?, ?, ?); """;
+
+            PreparedStatement preparedStatement = con.prepareStatement(insertQuery);
+
+            // Set the variables in the query
+            preparedStatement.setInt(1, SelectedID);
+            preparedStatement.setString(2, name);
+            preparedStatement.setInt(3, quantity);
+            preparedStatement.setInt(4, totalcost);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error during database insert: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 }
 
 

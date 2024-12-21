@@ -5,4 +5,5 @@ public abstract class PatientDetailsTemplate {
     public abstract void AddDepartmentAndServices();
     public abstract void AddMedicine();
     public abstract void ViewAllEntries();
+    public abstract void Deletion();
 }

@@ -56,9 +56,10 @@ public class PatientDetails extends PatientDetailsTemplate {
         Please select an option:
         [1] Add Department and Services
         [2] Add Prescribed Medicine
-        [3] View All Entries
-        [4] Change Patient ID
-        [5] Return to Main Menu
+        [3] Remove Medicine or Department entry
+        [4] View All Entries
+        [5] Change Patient ID
+        [6] Return to Main Menu
         \f-------------------------------------\f""" + "\u001B[0m");
         System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
@@ -71,10 +72,12 @@ public class PatientDetails extends PatientDetailsTemplate {
             case 2:
                 AddMedicine();
             case 3:
-                ViewAllEntries();
+                Deletion();
             case 4:
-                DeptServiceMain();
+                ViewAllEntries();
             case 5:
+                DeptServiceMain();
+            case 6:
                 UserInterface.MainMenu();
             default:
                 AddPatientDetails();
@@ -169,6 +172,7 @@ public class PatientDetails extends PatientDetailsTemplate {
 
     @Override
     public void AddMedicine() {
+        DB db = new DB();
         Scanner scanner = new Scanner(System.in);
         System.out.println("\033[1;96m" +
                 """
@@ -193,7 +197,7 @@ public class PatientDetails extends PatientDetailsTemplate {
             int totalCost = scanner.nextInt();
             scanner.nextLine();
             System.out.println("\f-----------------------------------------------\f");
-            // dito na yung pag-add nung name of medicine at total cost sa database
+            db.MedicineExpenses(name, selectedId, quantity, totalCost);
         }
         System.out.println("\n" + "\033[1;32m" + "Prescribed medicines successfully added!\n");
         AddPatientDetails();
@@ -203,6 +207,43 @@ public class PatientDetails extends PatientDetailsTemplate {
     public void ViewAllEntries() {
         DB db = new DB();
         db.FetchServices(selectedId);
+        db.FetchMedicine(selectedId);
+        AddPatientDetails();
+    }
+
+    @Override
+    public void Deletion() {
+        DB db = new DB();
+        int choice = 0;
+        System.out.println("\033[1;96m" +
+                """
+                
+                
+                +=====================================+"""+ "\033[1;33m" + """
+                
+                ║      Select what to Delete          ║
+                """ + "\033[1;96m" +"""
+                +=====================================+""" + "\u001B[0m");
+        System.out.println("\033[1;97m" + """
+                Please select an option:
+                [1]  Charged Departments and Services
+                [2]  Charged Medicines
+                \f-------------------------------------\f""" + "\u001B[0m");
+        System.out.print("⪀⫸ ");
+        Scanner scanner = new Scanner(System.in);
+        int selected = scanner.nextInt();
+
+        switch(selected){
+            case 1:
+                db.FetchServices(selectedId);
+                System.out.println("Please enter what service do you want to delete");
+                int mst_id = scanner.nextInt();
+                db.DepartmentServicesDelete(selectedId, mst_id);
+                AddPatientDetails();
+            case 2:
+                db.FetchMedicine(selectedId);
+                AddPatientDetails();
+        }
 
         // magkakaroon pa rito ng option si user kung may gusto ba siyang tanggalin sa list of entries
 
