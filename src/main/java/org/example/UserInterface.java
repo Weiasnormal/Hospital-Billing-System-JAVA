@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.Model.PatientInformation;
+
 import java.util.Scanner;
 
 public class UserInterface {
@@ -82,5 +84,6 @@ public class UserInterface {
                 MainMenu();
                 break;
         }
+
     }
 }

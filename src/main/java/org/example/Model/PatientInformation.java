@@ -3,6 +3,7 @@ import org.example.DB;
 import org.example.Database;
 import org.example.UserInterface;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Scanner;
 
