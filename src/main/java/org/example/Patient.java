@@ -15,72 +15,15 @@ public class Patient extends Person {
     }
 
     public void PatientDatabase(boolean check) {
-        // ang ginagawa nitong if statement ay kapag false yung argument passed sa method,
-        // return agad at hindi na ieexecute yung mga code sa ibaba
-        if(!check) {
-            return;
-        }
 
-        try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
-                    "u936666569_Nimbus",
-                    "Haduken@123456"
-            );
-            connection.setAutoCommit(true);
-            Statement statement = connection.createStatement();
-            String insertQuery = """
-            INSERT INTO Patient (patient_ID, age, gender, patient_name, contact_number, address)
-            VALUES (?, ?, ?, ?, ?, ?); """;
-
-            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-
-            // Set the variables in the query
-            preparedStatement.setInt(1, Id);
-            preparedStatement.setInt(2, Age);
-            preparedStatement.setString(3, Gender);
-            preparedStatement.setString(4, Name);
-            preparedStatement.setString(5, ContactNumber);
-            preparedStatement.setString(6, Address);
-
-//            Execute the insert
-            preparedStatement.executeUpdate();
-            System.out.println("Patient Registered Successfully!");
-        }
-        catch (SQLException e) {
-            System.out.println("Error during database insert: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
-
-
-
-
     public boolean Validation(){
-        Database database = new Database();
-        boolean check = database.GetUserInformation(Name);
-        try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
-                    "u936666569_Nimbus",
-                    "Haduken@123456"
-            );
-            String query = "SELECT * FROM Patient WHERE patient_ID = ?";
-
-            connection.setAutoCommit(true);
-            Statement statement = connection.createStatement();
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, Id);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // Check if the ID exists
-            if (resultSet.next()) {
-                System.out.println("Patient ID " + Id + " exists in the database.");
-                return false;
-            }
-
+        DB db = new DB();
+        if(db.PatientIDExists(Id)){
+            System.out.println("Patient ID " + Id + " already exists.");
+            return false;
+        }
         if(!(Gender.equalsIgnoreCase("male") || Gender.equalsIgnoreCase("female"))) {
             System.out.println("Invalid Gender!");
             return false;
@@ -91,20 +34,13 @@ public class Patient extends Person {
             return false;
         }
 
-        if(check){ // this will check if the username/patient name already exists in the temporary database
-            System.out.println("This patient already exist!");
-            return false;
-        } else {
-            System.out.println("Adding...");
-            return true;
-        }
-
-
-        }
-        catch (SQLException e) {
-            System.out.println("Error during database insert: " + e.getMessage());
-            e.printStackTrace();
-        }
+//        if(check){ // this will check if the username/patient name already exists in the temporary database
+//            System.out.println("This patient already exist!");
+//            return false;
+//        } else {
+//            System.out.println("Adding...");
+//            return true;
+//        }
 
         return true;
     }

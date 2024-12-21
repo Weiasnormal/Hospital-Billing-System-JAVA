@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class DB {
     public void DBMain() {
@@ -28,8 +27,48 @@ public class DB {
         }
     }
 
-    public void IInsertToDatabase(double Services, int Id) {
+    public void InsertToDatabase(boolean availableToInsert , int patientID, String name, int age, String gender, String contactNumber, String address){
+        // this method inserts the user information to the database
+        // ang ginagawa nitong if statement ay kapag false yung argument passed sa method,
+        // return agad at hindi na ieexecute yung mga code sa ibaba
+        if(!availableToInsert) {
+            return;
+        }
 
+        try {
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
+                    "u936666569_Nimbus",
+                    "Haduken@123456"
+            );
+            connection.setAutoCommit(true);
+            Statement statement = connection.createStatement();
+            String insertQuery = """
+            INSERT INTO Patient (patient_ID, age, gender, patient_name, contact_number, address)
+            VALUES (?, ?, ?, ?, ?, ?); """;
+
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+
+            // Set the variables in the query
+            preparedStatement.setInt(1, patientID);
+            preparedStatement.setInt(2, age);
+            preparedStatement.setString(3, gender);
+            preparedStatement.setString(4, name);
+            preparedStatement.setString(5, contactNumber);
+            preparedStatement.setString(6, address);
+
+//            Execute the insert
+            preparedStatement.executeUpdate();
+            System.out.println("Patient Registered Successfully!");
+        }
+        catch (SQLException e) {
+            System.out.println("Error during database insert: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void InsertToDatabase(double Services, int Id) {
+        // this overload method inserts the department and service to the database
         try {
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
@@ -55,17 +94,43 @@ public class DB {
             System.out.println("Error during database insert: " + e.getMessage());
             e.printStackTrace();
         }
-
-
     }
 
+    public boolean PatientIDExists(int PatientID) {
+        // checks if the patient id already exists in the database
+        boolean exists = false;
+        try {
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
+                    "u936666569_Nimbus",
+                    "Haduken@123456"
+            );
+            String query = "SELECT * FROM Patient WHERE patient_ID = ?";
 
+            connection.setAutoCommit(true);
+            Statement statement = connection.createStatement();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, PatientID);
 
-    public boolean ValidationToDatabase(double Services, int Id){
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-        boolean flag = true;
+            // Check if the ID exists
+            if (resultSet.next()) {
+                exists = true;
+            }
+        }
+        catch (SQLException e) {
+                System.out.println("Error during database insert: " + e.getMessage());
+                e.printStackTrace();
+        }
+        return exists;
+    }
 
-
+    public boolean DepartmentServicesExists(double Services, int Id){
+        // this method checks if department and service already exsits for the selected
+        // patient
+        boolean exists = false;
+        String ewan = "\n" + "\033[1;32m" + "Department and Service successfully added to patient\n";
         try {
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
@@ -75,7 +140,6 @@ public class DB {
 
             String query = "SELECT * FROM MedicalServices WHERE patient_ID = ? AND mst_ID = ?";
 
-
             connection.setAutoCommit(true);
             Statement statement = connection.createStatement();
 
@@ -84,29 +148,20 @@ public class DB {
             preparedStatement.setDouble(2, Services);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-
-
-
             if (resultSet.next()) {
-                System.out.println("Patient service already added");
-                flag = false;
+                ewan = "Department and service already exists for this patient.";
+                exists = true;
             }
-
-
-
         } catch (SQLException e) {
             System.out.println("Error during database insert: " + e.getMessage());
             e.printStackTrace();
         }
-
-        return flag;
-
+        System.out.println(ewan);
+        return exists;
     }
 
-
-
     public void FetchServices(int Id) {
-
+        // view all entries of department & services and medicine added to a patient
         try {
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
@@ -166,14 +221,5 @@ public class DB {
             System.out.println("Error during database insert: " + e.getMessage());
             e.printStackTrace();
         }
-
-
     }
-
-
-
-    }
-
-
-
-
+}
