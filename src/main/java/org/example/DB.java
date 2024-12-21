@@ -6,44 +6,36 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class DB {
-    public void DBMain() {
+    Connection con;
+
+    public DB() {
         try {
-            Connection connection = DriverManager.getConnection(
+            con = DriverManager.getConnection(
                     "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
                     "u936666569_Nimbus",
                     "Haduken@123456"
             );
-
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM MedicalServicesTags");
-
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("department"));
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
+    public Connection getConnection()
+    {
+        return con;
+    }
     public void IInsertToDatabase(double Services, int Id) {
 
         try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
-                    "u936666569_Nimbus",
-                    "Haduken@123456"
-            );
-            connection.setAutoCommit(true);
-            Statement statement = connection.createStatement();
+            con.setAutoCommit(true);
+            Statement statement = con.createStatement();
             String insertQuery = """
             
                     INSERT INTO MedicalServices (patient_ID, mst_ID)
-            VALUES (?, ?); """;
+                                VALUES (?, ?); """;
 
-            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+            PreparedStatement preparedStatement = con.prepareStatement(insertQuery);
 
             // Set the variables in the query
             preparedStatement.setInt(1, Id);
@@ -60,38 +52,25 @@ public class DB {
     }
 
 
-
-    public boolean ValidationToDatabase(double Services, int Id){
+    public boolean ValidationToDatabase(double Services, int Id) {
 
         boolean flag = true;
 
 
         try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
-                    "u936666569_Nimbus",
-                    "Haduken@123456"
-            );
 
             String query = "SELECT * FROM MedicalServices WHERE patient_ID = ? AND mst_ID = ?";
+            con.setAutoCommit(true);
+            Statement statement = con.createStatement();
 
-
-            connection.setAutoCommit(true);
-            Statement statement = connection.createStatement();
-
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setInt(1, Id);
             preparedStatement.setDouble(2, Services);
             ResultSet resultSet = preparedStatement.executeQuery();
-
-
-
-
             if (resultSet.next()) {
                 System.out.println("Patient service already added");
                 flag = false;
             }
-
 
 
         } catch (SQLException e) {
@@ -104,17 +83,11 @@ public class DB {
     }
 
 
-
     public void FetchServices(int Id) {
 
         try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
-                    "u936666569_Nimbus",
-                    "Haduken@123456"
-            );
-            connection.setAutoCommit(true);
-            Statement statement = connection.createStatement();
+            con.setAutoCommit(true);
+            Statement statement = con.createStatement();
             String fetchings = "SELECT \n" +
                     "    ms.services_ID, \n" +
                     "    ms.patient_ID, \n" +
@@ -130,7 +103,7 @@ public class DB {
                     "WHERE \n" +
                     "    ms.patient_ID = ?;";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(fetchings);
+            PreparedStatement preparedStatement = con.prepareStatement(fetchings);
 
             // Set the patient ID
             preparedStatement.setInt(1, Id); // 'Id' should be a variable with the patient ID to search for.
@@ -170,9 +143,71 @@ public class DB {
 
     }
 
-
-
+    public void GetUserInformation()
+    {
+        try {
+            String query = "SELECT * FROM Patient";
+            con.setAutoCommit(true);
+            Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            displayUserInformation(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
+    public void GetUserInformation(int id)
+    {
+        try
+        {
+            String query = "SELECT * FROM Patient WHERE patient_ID = ?";
+            con.setAutoCommit(true);
+            Statement statement = con.createStatement();
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            if(!resultSet.isLast())
+                System.out.println("No User with this ID found");
+            else
+                displayUserInformation(resultSet);
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+    public void displayUserInformation(ResultSet resultSet)
+    {
+        try {
+            do
+            {
+                int patientId = resultSet.getInt("patient_ID");
+                int age = resultSet.getInt("age");
+                String gender = resultSet.getString("gender");
+                String patientName = resultSet.getString("patient_name");
+                String contactNumber = resultSet.getString("contact_number");
+                String address = resultSet.getString("address");
+
+                // Print the fetched service details
+
+                System.out.println("\n---------------");
+                System.out.println("Patient ID     : " + patientId);
+                System.out.println("Patient Name   : " + patientName);
+                System.out.println("Age            : " + age);
+                System.out.println("Gender         : " + gender);
+                System.out.println("Contact Number : " + contactNumber);
+                System.out.println("Address        : " + address);
+                System.out.println("\n---------------");
+            }while (resultSet.next());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+}
+
+
 
 
 
