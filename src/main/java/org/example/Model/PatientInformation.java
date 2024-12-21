@@ -1,11 +1,16 @@
-package org.example;
+package org.example.Model;
+import org.example.DB;
+import org.example.Database;
+import org.example.UserInterface;
 
 import java.util.InputMismatchException;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.Scanner;
 
 public class PatientInformation extends PatientInformationTemplate {
     @Override
-    void PatientMain(){
+    public void PatientMain(){
         System.out.println("\033[1;96m" +
                 """
                 
@@ -42,7 +47,7 @@ public class PatientInformation extends PatientInformationTemplate {
     }
 
     @Override
-    void RegisterNewPatient() {
+    public void RegisterNewPatient() {
         System.out.println( "\n" + "\033[1;93m" + "⫍⫍⫍⫍" + "\033[1;97m" +"   Register a Patient   " + "\033[1;93m" + "⫎⫎⫎⫎" + "\u001B[0m");
         System.out.println("\033[1;97m" + """
         [1] Continue
@@ -98,7 +103,7 @@ public class PatientInformation extends PatientInformationTemplate {
     }
 
     @Override
-    void SearchPatient() {
+    public void SearchPatient() {
         System.out.println("\033[1;96m" +
                 """
                 
@@ -111,17 +116,18 @@ public class PatientInformation extends PatientInformationTemplate {
         System.out.print("Input Patient ID: ");
         Scanner scanner = new Scanner(System.in);
         int id = scanner.nextInt();
-        Database database = new Database();
-        boolean exists = database.GetUserInformation(id);
-        database.GetUserInformation(id, exists);
+
+
+        DB db = new DB();
+        db.GetUserInformation(id);
         UserInterface.MainMenu();
     }
 
     @Override
-    void ViewAllPatients() {
-        Database database = new Database();
+    public void ViewAllPatients() {
+        DB db = new DB();
         Scanner scanner = new Scanner(System.in);
-        database.GetUserInformation();
+        db.GetUserInformation();
         System.out.println("Press enter to continue...");
         scanner.nextLine(); // if enter key is pressed, it will continue and execute the next line of code
         UserInterface.MainMenu();

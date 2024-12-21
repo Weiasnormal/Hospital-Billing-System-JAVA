@@ -1,11 +1,13 @@
 package org.example;
 
+import org.example.Model.PatientDetailsTemplate;
+
 import java.util.Scanner;
 
 public class PatientDetails extends PatientDetailsTemplate {
     int selectedId;
     @Override
-    void DeptServiceMain() {
+    public void DeptServiceMain() {
         selectedId = CheckIfPatientIdExists(); // check muna if patient id exists; no >> return main menu; yes >> hold ID and continue program
         AddPatientDetails();
     }
@@ -78,7 +80,7 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     @Override
-    void AddDepartmentAndServices() {
+    public void AddDepartmentAndServices() {
         System.out.println("\033[1;96m" +
                 """
                 
@@ -164,7 +166,7 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     @Override
-    void AddMedicine() {
+    public void AddMedicine() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\033[1;96m" +
                 """
@@ -196,7 +198,7 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     @Override
-    void ViewAllEntries() {
+    public void ViewAllEntries() {
         DB db = new DB();
         db.FetchServices(selectedId);
 
