@@ -403,6 +403,136 @@ public class DB {
     }
 
 
+    public double Billing(int patientID) {
+        double totalExpenses = -1; // Initialize to -1 to indicate failure by default
+        try {
+            con.setAutoCommit(true);
+
+            // Query to calculate the total price
+            String totalQuery = """
+                SELECT 
+                    COALESCE(ms_expenses.total_services, 0) + COALESCE(me_expenses.total_medicines, 0) AS total_expenses
+                FROM 
+                    Patient p
+                LEFT JOIN (
+                    SELECT 
+                        ms.patient_ID,
+                        SUM(mst.Price) AS total_services
+                    FROM 
+                        MedicalServices ms
+                    JOIN MedicalServicesTags mst ON ms.mst_ID = mst.mst_ID
+                    GROUP BY 
+                        ms.patient_ID
+                ) ms_expenses ON p.patient_ID = ms_expenses.patient_ID
+                LEFT JOIN (
+                    SELECT 
+                        patient_ID,
+                        SUM(total_cost) AS total_medicines
+                    FROM 
+                        MedicineExpenses
+                    GROUP BY 
+                        patient_ID
+                ) me_expenses ON p.patient_ID = me_expenses.patient_ID
+                WHERE 
+                    p.patient_ID = ?;
+                """;
+
+            PreparedStatement totalStatement = con.prepareStatement(totalQuery);
+            totalStatement.setInt(1, patientID);
+            ResultSet totalResult = totalStatement.executeQuery();
+
+            if (totalResult.next()) {
+                totalExpenses = totalResult.getDouble("total_expenses");
+                if (totalExpenses == 0) {
+                    System.out.println("No services or medicines detected for patient ID: " + patientID);
+                    return -1; // Return -1 if no expenses are found
+                }
+
+                System.out.println("Total expenses for patient ID " + patientID + ": " + totalExpenses);
+
+                // Insert the total into the Billing table
+                String insertQuery = """
+                INSERT INTO Billing (patient_id, expenses)
+                VALUES (?, ?);
+                """;
+                PreparedStatement insertStatement = con.prepareStatement(insertQuery);
+                insertStatement.setInt(1, patientID);
+                insertStatement.setDouble(2, totalExpenses);
+                insertStatement.executeUpdate();
+            } else {
+                System.out.println("No patient found with ID: " + patientID);
+                return -1; // Return -1 if no patient found
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during database operation: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return totalExpenses; // Return the total expenses (can be 0 or any valid amount)
+    }
+
+
+
+
+    public void FinalBill(int patientID, String method, double amount, double totalcost) {
+        try {
+            // Insert the total cost into the Billing table
+            String insertBillQuery = """
+        INSERT INTO Billing (patient_id, expenses)
+        VALUES (?, ?);
+        """;
+            PreparedStatement insertBillStatement = con.prepareStatement(insertBillQuery);
+            insertBillStatement.setInt(1, patientID);
+            insertBillStatement.setDouble(2, totalcost);
+            insertBillStatement.executeUpdate();
+
+            // Check if the amount paid matches the total cost
+            boolean paymentStatus = false;
+            double remainingBalance = totalcost;
+
+            if (amount >= totalcost) {
+                paymentStatus = true;
+                remainingBalance = 0;  // Payment is equal to total cost
+            } else {
+                remainingBalance -= amount;  // Deduct paid amount from total cost
+            }
+
+            // Insert or update the PaidCustomers table based on the payment status
+            String updatePaymentQuery = """
+        INSERT INTO PaidCustomers (patient_id, payment_status, payment_method, remaining_balance)
+        VALUES (?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE payment_status = ?, remaining_balance = ?;
+        """;
+            PreparedStatement updatePaymentStatement = con.prepareStatement(updatePaymentQuery);
+            updatePaymentStatement.setInt(1, patientID);
+            updatePaymentStatement.setBoolean(2, paymentStatus);
+            updatePaymentStatement.setString(3, method);
+            updatePaymentStatement.setDouble(4, remainingBalance);
+
+            // Provide values for the ON DUPLICATE KEY UPDATE clause (parameters 5 and 6)
+            updatePaymentStatement.setBoolean(5, paymentStatus); // For payment_status
+            updatePaymentStatement.setDouble(6, remainingBalance); // For remaining_balance
+
+            updatePaymentStatement.executeUpdate();
+
+            // Print the result for verification
+            System.out.println("Bill processed for Patient ID: " + patientID);
+            System.out.println("Total cost: " + totalcost);
+            System.out.println("Amount paid: " + amount);
+            System.out.println("Remaining balance: " + remainingBalance);
+            System.out.println("Payment status: " + (paymentStatus ? "Paid" : "Not Paid"));
+
+        } catch (SQLException e) {
+            System.out.println("Error during database operation: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
 }
 
 

@@ -69,12 +69,12 @@ public class UserInterface {
                 patient_details.DeptServiceMain();
                 break;
             case "3":
-                // generate and display bill
-                System.out.println("Generating and Displaying Bill..."); //temporary
+               GenerateAndDisplayBill bill = new GenerateAndDisplayBill();
+               bill.Main();
                 break;
             case "4":
-                // process payment
-                System.out.println("Processing Payment..."); //temporary
+                GenerateAndDisplayBill payment = new GenerateAndDisplayBill();
+                payment.PaymentBill();
                 break;
             case "5":
                 // exit program
