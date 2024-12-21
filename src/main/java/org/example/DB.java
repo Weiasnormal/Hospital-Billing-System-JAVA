@@ -208,6 +208,7 @@ public class DB {
             con.setAutoCommit(true);
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
+            resultSet.next();
             displayUserInformation(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
