@@ -158,13 +158,11 @@ public class PatientDetails extends PatientDetailsTemplate {
             default:
                 break;
         }
-        if(!db.ValidationToDatabase(selected,selectedId)){
+        if(db.DepartmentServicesExists(selected,selectedId)){
             AddDepartmentAndServices();
         }
-        db.IInsertToDatabase(selected, selectedId);
-        System.out.println("\n" + "\033[1;32m" + "Department and Service successfully added to patient\n");
+        db.InsertToDatabase(selected, selectedId);
         AddPatientDetails();
-
     }
 
     @Override

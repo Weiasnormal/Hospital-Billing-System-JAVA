@@ -25,8 +25,45 @@ public class DB {
     {
         return con;
     }
-    public void IInsertToDatabase(double Services, int Id) {
 
+
+    public void InsertToDatabase(boolean availableToInsert , int patientID, String name, int age, String gender, String contactNumber, String address){
+        // this method inserts the user information to the database
+        // ang ginagawa nitong if statement ay kapag false yung argument passed sa method,
+        // return agad at hindi na ieexecute yung mga code sa ibaba
+        if(!availableToInsert) {
+            return;
+        }
+
+        try {
+            con.setAutoCommit(true);
+            Statement statement = con.createStatement();
+            String insertQuery = """
+            INSERT INTO Patient (patient_ID, age, gender, patient_name, contact_number, address)
+            VALUES (?, ?, ?, ?, ?, ?); """;
+
+            PreparedStatement preparedStatement = con.prepareStatement(insertQuery);
+
+            // Set the variables in the query
+            preparedStatement.setInt(1, patientID);
+            preparedStatement.setInt(2, age);
+            preparedStatement.setString(3, gender);
+            preparedStatement.setString(4, name);
+            preparedStatement.setString(5, contactNumber);
+            preparedStatement.setString(6, address);
+
+//            Execute the insert
+            preparedStatement.executeUpdate();
+            System.out.println("Patient Registered Successfully!");
+        }
+        catch (SQLException e) {
+            System.out.println("Error during database insert: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void InsertToDatabase(double Services, int Id) {
+        // this overload method inserts the department and service to the database
         try {
             con.setAutoCommit(true);
             Statement statement = con.createStatement();
@@ -47,19 +84,43 @@ public class DB {
             System.out.println("Error during database insert: " + e.getMessage());
             e.printStackTrace();
         }
-
-
     }
 
+    public boolean PatientIDExists(int PatientID) {
+        // checks if the patient id already exists in the database
+        boolean exists = false;
+        try {
+            
+            String query = "SELECT * FROM Patient WHERE patient_ID = ?";
 
-    public boolean ValidationToDatabase(double Services, int Id) {
+            con.setAutoCommit(true);
+            Statement statement = con.createStatement();
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, PatientID);
 
-        boolean flag = true;
+            ResultSet resultSet = preparedStatement.executeQuery();
 
+            // Check if the ID exists
+            if (resultSet.next()) {
+                exists = true;
+            }
+        }
+        catch (SQLException e) {
+                System.out.println("Error during database insert: " + e.getMessage());
+                e.printStackTrace();
+        }
+        return exists;
+    }
 
+    public boolean DepartmentServicesExists(double Services, int Id){
+        // this method checks if department and service already exsits for the selected
+        // patient
+        boolean exists = false;
+        String ewan = "\n" + "\033[1;32m" + "Department and Service successfully added to patient\n";
         try {
 
             String query = "SELECT * FROM MedicalServices WHERE patient_ID = ? AND mst_ID = ?";
+
             con.setAutoCommit(true);
             Statement statement = con.createStatement();
 
@@ -67,24 +128,21 @@ public class DB {
             preparedStatement.setInt(1, Id);
             preparedStatement.setDouble(2, Services);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             if (resultSet.next()) {
-                System.out.println("Patient service already added");
-                flag = false;
+                ewan = "Department and service already exists for this patient.";
+                exists = true;
             }
-
-
         } catch (SQLException e) {
             System.out.println("Error during database insert: " + e.getMessage());
             e.printStackTrace();
         }
-
-        return flag;
-
+        System.out.println(ewan);
+        return exists;
     }
 
-
     public void FetchServices(int Id) {
-
+        // view all entries of department & services and medicine added to a patient
         try {
             con.setAutoCommit(true);
             Statement statement = con.createStatement();

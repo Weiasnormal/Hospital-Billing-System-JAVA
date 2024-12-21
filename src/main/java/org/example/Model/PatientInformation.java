@@ -3,6 +3,7 @@ import org.example.DB;
 import org.example.Database;
 import org.example.UserInterface;
 
+import java.util.InputMismatchException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Scanner;
@@ -75,26 +76,30 @@ public class PatientInformation extends PatientInformationTemplate {
                 """ + "\033[1;96m" +"""
                 +=====================================+""" + "\u001B[0m");
 
-        System.out.print("Patient ID: ");
-        int ID = scanner.nextInt(); //no catch if not int is inputed
-        scanner.nextLine(); // to prevent skipping the next ".nextLine()"
-        System.out.print("Name: ");
-        String name = scanner.nextLine();
-        System.out.print("Age: ");
-        int age = scanner.nextInt();
-        scanner.nextLine(); // to prevent skipping the next ".nextLine()"
-        System.out.print("Gender: ");
-        String gender = scanner.nextLine();
-        System.out.print("Contact Number: ");
-        String contact_number = scanner.nextLine();
-        System.out.print("Address: ");
-        String address = scanner.nextLine();
+        try {
+            System.out.print("Patient ID: ");
+            int ID = scanner.nextInt();
+            scanner.nextLine(); // to prevent skipping the next ".nextLine()"
+            System.out.print("Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Age: ");
+            int age = scanner.nextInt();
+            scanner.nextLine(); // to prevent skipping the next ".nextLine()"
+            System.out.print("Gender: ");
+            String gender = scanner.nextLine();
+            System.out.print("Contact Number: ");
+            String contact_number = scanner.nextLine();
+            System.out.print("Address: ");
+            String address = scanner.nextLine();
 
-        Patient patient = new Patient(ID, name, age, gender, contact_number, address);
-        UserInterface.ConsoleClear();
-        boolean validate = patient.Validation();
-        patient.PatientDatabase(validate);
-        UserInterface.MainMenu();
+            Patient patient = new Patient(ID, name, age, gender, contact_number, address);
+            UserInterface.ConsoleClear();
+            boolean validate = patient.Validation();
+            DB db = new DB();
+            db.InsertToDatabase(validate, ID, name, age, gender, contact_number, address);
+            UserInterface.MainMenu();
+        }
+        catch (InputMismatchException e){}
     }
 
     @Override
