@@ -62,6 +62,9 @@ public class DB {
         }
     }
 
+
+
+
     public void InsertToDatabase(double Services, int Id) {
         // this overload method inserts the department and service to the database
         try {
@@ -236,6 +239,7 @@ public class DB {
             throw new RuntimeException(e);
         }
     }
+
     public void displayUserInformation(ResultSet resultSet)
     {
         try {
@@ -264,6 +268,28 @@ public class DB {
         }
     }
 
+    public String GetName(int id)
+    {
+        try {
+            String query = "SELECT patient_name FROM Patient WHERE patient_ID = ?";
+            con.setAutoCommit(true);
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            String patientName = null;
+            if (resultSet.next()) { // Move the cursor to the first row
+                patientName = resultSet.getString("patient_name");
+            }
+
+            return patientName; // Will return null if no patient is found
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+            return null; // Han
+        }
+    }
 }
 
 

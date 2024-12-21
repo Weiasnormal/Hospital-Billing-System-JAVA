@@ -13,6 +13,7 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     private int CheckIfPatientIdExists() {
+        DB db = new DB();
         System.out.println("\033[1;96m" +
                 """
                 
@@ -29,8 +30,7 @@ public class PatientDetails extends PatientDetailsTemplate {
         int patientId = scanner.nextInt();
         scanner.nextLine();
 
-        Database database = new Database();
-        boolean exists = database.GetUserInformation(patientId);
+        boolean exists = db.PatientIDExists(patientId);
         if (!exists) {
             UserInterface.MainMenu();
         }
@@ -38,6 +38,8 @@ public class PatientDetails extends PatientDetailsTemplate {
     }
 
     private void AddPatientDetails() {
+        DB db = new DB();
+
         System.out.println("\033[1;96m" +
                 """
                 
@@ -48,7 +50,7 @@ public class PatientDetails extends PatientDetailsTemplate {
                 """ + "\033[1;96m" +"""
                 +=====================================+""" + "\u001B[0m");
         System.out.println("ID   : " + selectedId);
-        System.out.println("Name : " + "(patient name)"); // yung pangalan ay manggagaling from database
+        System.out.println("Name : " + db.GetName(selectedId)); // yung pangalan ay manggagaling from database
         System.out.println("\033[1;97m" + """
         \f-------------------------------------\f
         Please select an option:

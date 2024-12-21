@@ -2,7 +2,6 @@
 package org.example.Model;
 
 import org.example.DB;
-import org.example.Database;
 
 import java.sql.*;
 
