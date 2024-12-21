@@ -1,8 +1,10 @@
 // this class inherited the attributes from Person class
-package org.example;
+package org.example.Model;
+
+import org.example.DB;
+import org.example.Database;
 
 import java.sql.*;
-import java.util.Scanner;
 
 public class Patient extends Person {
     public Patient(int ID, String name, int age, String gender, String contact_number, String address) {
@@ -58,17 +60,10 @@ public class Patient extends Person {
 
 
     public boolean Validation(){
-        Database database = new Database();
-        boolean check = database.GetUserInformation(Name);
+        DB db = new DB();
         try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
-                    "u936666569_Nimbus",
-                    "Haduken@123456"
-            );
             String query = "SELECT * FROM Patient WHERE patient_ID = ?";
-
-            connection.setAutoCommit(true);
+            Connection connection = db.getConnection();
             Statement statement = connection.createStatement();
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, Id);
@@ -91,13 +86,9 @@ public class Patient extends Person {
             return false;
         }
 
-        if(check){ // this will check if the username/patient name already exists in the temporary database
-            System.out.println("This patient already exist!");
-            return false;
-        } else {
-            System.out.println("Adding...");
-            return true;
-        }
+
+        System.out.println("Adding...");
+        return true;
 
 
         }
