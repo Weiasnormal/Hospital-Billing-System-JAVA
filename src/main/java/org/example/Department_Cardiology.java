@@ -49,12 +49,14 @@ public class Department_Cardiology extends ServicesUsed{
                     serviceUsed = "Stress Test";
                     return 2.4;
 
-//                case 5:
-//                    PatientDetails patientDetails = new PatientDetails();
-//                    patientDetails.AddDepartmentAndServices();
+                case 5:
+                    PatientDetails patientDetails = new PatientDetails();
+                    patientDetails.AddDepartmentAndServices();
 //                    return servicesUsed.toString(); // Exit the current department
                 default:
-                    System.out.println("Invalid option. Please select again.");
+                    System.out.println("\n\nPlease enter a valid input!");
+                    addServices();
+
 //                    continue; // Skip the rest of the loop and ask again
             }
 

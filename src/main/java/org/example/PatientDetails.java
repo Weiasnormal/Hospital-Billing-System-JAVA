@@ -32,7 +32,7 @@ public class PatientDetails extends PatientDetailsTemplate {
 
         boolean exists = db.PatientIDExists(patientId);
         if (!exists) {
-            System.out.println("Wrong Input or Patient ID does not exist");
+            System.out.println("Invalid Input or Patient ID does not exist");
             UserInterface.MainMenu();
         }
         return patientId;
@@ -61,7 +61,7 @@ public class PatientDetails extends PatientDetailsTemplate {
         [2] Add Prescribed Medicine
         [3] Remove Medicine or Department entry
         [4] View All Entries
-        [5] View Bill and Payment Finalzation
+        [5] View Bill and Payment Finalization
         [6] Change Patient ID
         [7] Return to Main Menu
         \f-------------------------------------\f""" + "\u001B[0m");
@@ -88,6 +88,7 @@ public class PatientDetails extends PatientDetailsTemplate {
             case 7:
                 UserInterface.MainMenu();
             default:
+                System.out.println("\n\nPlease enter a valid input!");
                 AddPatientDetails();
         }
     }
@@ -169,8 +170,16 @@ public class PatientDetails extends PatientDetailsTemplate {
                 AddPatientDetails();
                 break;
             default:
+                System.out.println("\n\nPlease enter a valid input!");
+                AddDepartmentAndServices();
                 break;
         }
+
+        if(selected == 0){
+            System.out.println("\n\nAn error has occurred. Please try again!");
+            AddPatientDetails();
+        }
+
         if(db.DepartmentServicesExists(selected,selectedId)){
             AddDepartmentAndServices();
         }
@@ -196,12 +205,12 @@ public class PatientDetails extends PatientDetailsTemplate {
         // Validate number of medicines input
         while (true) {
             try {
-                System.out.println("How many prescribed medicine do you want to add?");
+                System.out.println("How many prescribed medicine do you want to add? (Maximum of 10)");
                 System.out.print("⪀⫸ ");
                 numberOfMedicine = scanner.nextInt();
                 scanner.nextLine(); // Consume newline
-                if (numberOfMedicine <= 0) {
-                    System.out.println("\033[1;31mPlease enter a valid positive number.\033[0m");
+                if (numberOfMedicine <= 0 || numberOfMedicine > 10) {
+                    System.out.println("\033[1;31mPlease enter a valid number of medicines (between 1 and 10).\033[0m");
                 } else {
                     break;
                 }
@@ -259,20 +268,24 @@ public class PatientDetails extends PatientDetailsTemplate {
     public void ViewAllEntries() {
         DB db = new DB();
         System.out.println("\033[1;96m" +
-                """
-                
-                
-                +===============================================+""" + "\033[1;33m" + """
+            """
             
-            ║             Patient Information               ║
+            
+            +===============================================+""" + "\033[1;33m" + """
+            
+            ║        Visit Details and Services Used        ║
             """ + "\033[1;96m" + """
             +===============================================+""" + "\u001B[0m");
+        System.out.println("[Patient Information]");
         System.out.println("ID   : " + selectedId);
         System.out.println("Name : " + db.GetName(selectedId));
         System.out.println("---------------");
 
         db.FetchServices(selectedId);
         db.FetchMedicine(selectedId);
+        System.out.println("\nPress enter to continue...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
         AddPatientDetails();
     }
 
@@ -285,18 +298,18 @@ public class PatientDetails extends PatientDetailsTemplate {
         while (true) {
             try {
                 System.out.println("\033[1;96m" +
-                        """
-                        
-                        
-                        +=====================================+""" + "\033[1;33m" + """
+                    """
                     
-                    ║      Select what to Delete          ║
+                    
+                    +=====================================+""" + "\033[1;33m" + """
+                    
+                    ║        Select what to Delete        ║
                     """ + "\033[1;96m" + """
                     +=====================================+""" + "\u001B[0m");
                 System.out.println("\033[1;97m" + """
                     Please select an option:
-                    [1]  Charged Departments and Services
-                    [2]  Charged Medicines
+                    [1] Charged Departments and Services
+                    [2] Charged Medicines
                     \f-------------------------------------\f""" + "\u001B[0m");
                 System.out.print("⪀⫸ ");
                 selected = scanner.nextInt();
@@ -314,7 +327,8 @@ public class PatientDetails extends PatientDetailsTemplate {
         switch (selected) {
             case 1 -> {
                 db.FetchServices(selectedId);
-                System.out.println("Please enter the service ID you want to delete:");
+                System.out.println("\nPlease enter the service ID you want to delete");
+                System.out.print("⪀⫸ ");
                 while (true) {
                     try {
                         int mst_id = scanner.nextInt();
@@ -329,7 +343,8 @@ public class PatientDetails extends PatientDetailsTemplate {
             }
             case 2 -> {
                 db.FetchMedicine(selectedId);
-                System.out.println("Please enter the medicine ID you want to delete:");
+                System.out.println("\nPlease enter the medicine ID you want to delete");
+                System.out.print("⪀⫸ ");
                 while (true) {
                     try {
                         int med_id = scanner.nextInt();

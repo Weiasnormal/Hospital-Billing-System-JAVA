@@ -41,12 +41,7 @@ public class Patient extends Person {
             System.out.println("Invalid Contact Number!");
             return false;
         }
-
-
-        System.out.println("Adding...");
         return true;
-
-
         }
         catch (SQLException e) {
             System.out.println("Error during database insert: " + e.getMessage());

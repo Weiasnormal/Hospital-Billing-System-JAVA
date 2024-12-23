@@ -41,7 +41,7 @@ public class UserInterface {
                     "\033[1;97m" +
                             """
                             [1] Manage Patient Records
-                            [2] Add Patient Details
+                            [2] Manage Patient Details
                             [3] Exit the System""" + "\u001B[0m"
             );
             System.out.println("\f--------------------------------------\f");
@@ -52,9 +52,6 @@ public class UserInterface {
             ConsoleClear();
             PatientInformation patient_service = new PatientInformation();
             switch (input) {
-                case "0":
-                    patient_service.ViewAllPatients();
-                    break;
                 case "1":
                     patient_service.PatientMain();
                     break;
@@ -66,6 +63,7 @@ public class UserInterface {
                     System.exit(0);
                     break;
                 default:
+                    System.out.println("\n\nPlease enter a valid input!");
                     MainMenu(); // Go back to MainMenu on invalid input
                     break;
             }

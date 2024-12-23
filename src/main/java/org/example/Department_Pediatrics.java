@@ -38,6 +38,7 @@ public class Department_Pediatrics extends ServicesUsed{
                 PatientDetails patientDetails = new PatientDetails();
                 patientDetails.AddDepartmentAndServices();
             default:
+                System.out.println("\n\nPlease enter a valid input!");
                 addServices();
                 break;
         }

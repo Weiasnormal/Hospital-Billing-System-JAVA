@@ -15,7 +15,7 @@ public class PatientInformation extends PatientInformationTemplate {
                 
                 +======================================+"""+ "\033[1;33m" + """
                 
-                ║    Manage Patient Medical Records    ║
+                ║        Manage Patient Records        ║
                 """ + "\033[1;96m" +"""
                 +======================================+""" + "\u001B[0m");
         System.out.println("\033[1;97m" + """
@@ -38,6 +38,7 @@ public class PatientInformation extends PatientInformationTemplate {
             case "4":
                 UserInterface.MainMenu();
             default:
+                System.out.println("\n\nPlease enter a valid input!");
                 PatientMain();
         }
     }
@@ -100,6 +101,7 @@ public class PatientInformation extends PatientInformationTemplate {
 
             Patient patient = new Patient(ID, name, age, gender, contact_number, address);
             UserInterface.ConsoleClear();
+            System.out.println("Processing...");
             boolean isValid = patient.Validation();
             db.InsertToDatabase(isValid, ID, name, age, gender, contact_number, address);
             UserInterface.MainMenu();
@@ -112,8 +114,12 @@ public class PatientInformation extends PatientInformationTemplate {
 
     @Override
     public void SearchPatient() {
+        String error = "\nInput invalid, please enter a numeric ID.";
         try {
-            System.out.println("\033[1;96m" + """
+            System.out.println("\033[1;96m" +
+                """
+                
+                
                 +======================================+"""+ "\033[1;33m" + """
                 
                 ║      Search Patient Information      ║
@@ -124,7 +130,7 @@ public class PatientInformation extends PatientInformationTemplate {
             String id = scanner.nextLine();
 
             if(id == null || Integer.parseInt(id) < 1) {
-                System.out.println("Input invalid, please enter a numeric ID.");
+                System.out.println(error);
                 SearchPatient();
             }
 
@@ -133,11 +139,11 @@ public class PatientInformation extends PatientInformationTemplate {
             PatientMain();
         }
         catch (InputMismatchException e){
-            System.out.println("Input invalid, please enter a numeric ID.");
+            System.out.println(error);
             SearchPatient();
         }
         catch (NumberFormatException e){
-            System.out.println("Input invalid, please enter a numeric ID.");
+            System.out.println(error);
             SearchPatient();
         }
     }
@@ -146,7 +152,17 @@ public class PatientInformation extends PatientInformationTemplate {
     public void ViewAllPatients() {
         DB db = new DB();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=== Patient List ===");
+
+        System.out.println("\033[1;96m" +
+                """
+                
+                
+                +=====================================+"""+ "\033[1;33m" + """
+                
+                ║            Patient List             ║
+                """ + "\033[1;96m" +"""
+                +=====================================+""" + "\u001B[0m");
+
         db.GetUserInformation();
         System.out.println("Press enter to continue...");
         scanner.nextLine(); // if enter key is pressed, it will continue and execute the next line of code

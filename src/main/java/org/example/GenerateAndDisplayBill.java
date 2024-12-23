@@ -35,6 +35,16 @@ public class GenerateAndDisplayBill {
 
         while (true) {
             try {
+                System.out.println("\033[1;96m" +
+                """
+                
+                
+                +=====================================+"""+ "\033[1;33m" + """
+                
+                ║          Bill and Payment           ║
+                """ + "\033[1;96m" +"""
+                +=====================================+""" + "\u001B[0m");
+
                 System.out.println("\033[1;97m-------------------------------------");
                 System.out.println("[Patient Information]");
                 System.out.println("ID   : " + patientID);
@@ -120,18 +130,18 @@ public class GenerateAndDisplayBill {
     public static void PaymentBill(int selectedId) {
         DB db = new DB();
         Scanner sc = new Scanner(System.in);
-
-        System.out.println("=== Patient Information ===");
-        System.out.println("---------------");
+        System.out.println("\n\n");
+        System.out.println("--------------------------------------");
+        System.out.println("[Patient Information]");
         System.out.println("ID   : " + selectedId);
         System.out.println("Name : " + db.GetName(selectedId));
-        System.out.println("---------------");
+        System.out.println("--------------------------------------");
 
         double amount = 0;
 
         while (true) {
             try {
-                System.out.println("Payment Amount : ");
+                System.out.println("Enter Payment Amount");
                 System.out.print("⪀⫸ ");
                 amount = sc.nextDouble();
                 sc.nextLine(); // Consume the newline

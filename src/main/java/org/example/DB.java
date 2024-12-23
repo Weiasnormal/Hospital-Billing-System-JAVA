@@ -1,11 +1,14 @@
 package org.example;
 
+import com.mysql.cj.jdbc.exceptions.CommunicationsException;
+
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.Scanner;
 
 public class DB {
     Connection con;
@@ -13,7 +16,7 @@ public class DB {
     public DB() {
         try {
             con = DriverManager.getConnection(
-                    "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus",
+                    "jdbc:mysql://153.92.15.21:3306/u936666569_Nimbus?autoReconnect=true",
                     "u936666569_Nimbus",
                     "Haduken@123456"
             );
@@ -133,7 +136,7 @@ public class DB {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                ewan = "Department and service already exists for this patient.";
+                ewan = "\n\nDepartment and service already exists for this patient.";
                 exists = true;
             }
         } catch (SQLException e) {
@@ -261,6 +264,10 @@ public class DB {
 
             if (!hasResults) {
                 System.out.println("No services found for patient ID: " + Id);
+            } else {
+                System.out.println("\nPress enter to continue...");
+                Scanner scanner = new Scanner(System.in);
+                scanner.nextLine();
             }
 
         } catch (SQLException e) {
@@ -308,6 +315,10 @@ public class DB {
 
         if (!hasResults) {
             System.out.println("No services found for patient ID: " + Id);
+        } else {
+            System.out.println("\nPress enter to continue...");
+            Scanner scanner = new Scanner(System.in);
+            scanner.nextLine();
         }
 
     } catch (SQLException e) {
@@ -546,12 +557,13 @@ public class DB {
             insertPaymentStatement.executeUpdate();
 
             // Print the result for verification
-            System.out.println("Bill processed for Patient ID: " + patientID);
-            System.out.println("Total cost: " + totalcost);
-            System.out.println("Amount paid: " + amount);
-            System.out.println("Remaining balance: " + remainingBalance);
-            System.out.println("Payment status: " + (paymentStatus ? "Paid" : "Not Paid"));
-
+            System.out.println("-------------------------------------------------------");
+            System.out.println("Bill processed for Patient ID : " + patientID);
+            System.out.println("Total cost                    : " + totalcost);
+            System.out.println("Amount paid                   : " + amount);
+            System.out.println("Remaining balance             : " + remainingBalance);
+            System.out.println("Payment status                : " + (paymentStatus ? "Paid" : "Not Paid"));
+            System.out.println("-------------------------------------------------------");
         } catch (SQLException e) {
             System.out.println("Error during database operation: " + e.getMessage());
             e.printStackTrace();
