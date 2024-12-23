@@ -78,8 +78,13 @@ public class PatientInformation extends PatientInformationTemplate {
                 +=====================================+""" + "\u001B[0m");
 
         try {
+            DB db = new DB();
             System.out.print("Patient ID: ");
             int ID = scanner.nextInt();
+            if(db.PatientIDExists(ID)){
+                System.out.print("Patient ID Already Exists ");
+                NewPatient();
+            }
             scanner.nextLine(); // to prevent skipping the next ".nextLine()"
             System.out.print("Name: ");
             String name = scanner.nextLine();
@@ -96,7 +101,6 @@ public class PatientInformation extends PatientInformationTemplate {
             Patient patient = new Patient(ID, name, age, gender, contact_number, address);
             UserInterface.ConsoleClear();
             boolean isValid = patient.Validation();
-            DB db = new DB();
             db.InsertToDatabase(isValid, ID, name, age, gender, contact_number, address);
             UserInterface.MainMenu();
         }

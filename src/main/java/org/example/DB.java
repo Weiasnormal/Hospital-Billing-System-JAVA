@@ -176,6 +176,38 @@ public class DB {
         System.out.println(message);
     }
 
+    public void MedicineDelete(int patientId, int medID) {
+        // Message to show the result of the operation
+        String message = "\n\033[1;32mDepartment and Service successfully removed\n";
+
+        try {
+            // Check if the department and service exist for the patient
+            String query = "SELECT * FROM MedicineExpenses WHERE patient_ID = ? AND med_id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, patientId);
+            preparedStatement.setDouble(2, medID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                message = "Department and service do not exist for this patient.";
+            } else {
+                // Delete the record if it exists
+                String deleteQuery = "DELETE FROM MedicineExpenses WHERE patient_ID = ? AND med_id = ?";
+                PreparedStatement deleteStatement = con.prepareStatement(deleteQuery);
+                deleteStatement.setInt(1, patientId);
+                deleteStatement.setDouble(2, medID);
+                deleteStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            message = "Error during database deletion: " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        // Print the result message
+        System.out.println(message);
+    }
+
 
 
     public void FetchServices(int Id) {
@@ -449,8 +481,6 @@ public class DB {
                     return -1; // Return -1 if no expenses are found
                 }
 
-                System.out.println("Total expenses for patient ID " + patientID + ": " + totalExpenses);
-
                 // Insert the total into the Billing table
                 String insertQuery = """
                 INSERT INTO Billing (patient_id, expenses)
@@ -475,13 +505,13 @@ public class DB {
 
 
 
-    public void FinalBill(int patientID, String method, double amount, double totalcost) {
+    public void FinalBill(int patientID, double amount, double totalcost) {
         try {
             // Insert the total cost into the Billing table
             String insertBillQuery = """
-        INSERT INTO Billing (patient_id, expenses)
-        VALUES (?, ?);
-        """;
+    INSERT INTO Billing (patient_id, expenses)
+    VALUES (?, ?);
+    """;
             PreparedStatement insertBillStatement = con.prepareStatement(insertBillQuery);
             insertBillStatement.setInt(1, patientID);
             insertBillStatement.setDouble(2, totalcost);
@@ -498,23 +528,22 @@ public class DB {
                 remainingBalance -= amount;  // Deduct paid amount from total cost
             }
 
-            // Insert or update the PaidCustomers table based on the payment status
-            String updatePaymentQuery = """
-        INSERT INTO PaidCustomers (patient_id, payment_status, payment_method, remaining_balance)
-        VALUES (?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE payment_status = ?, remaining_balance = ?;
-        """;
-            PreparedStatement updatePaymentStatement = con.prepareStatement(updatePaymentQuery);
-            updatePaymentStatement.setInt(1, patientID);
-            updatePaymentStatement.setBoolean(2, paymentStatus);
-            updatePaymentStatement.setString(3, method);
-            updatePaymentStatement.setDouble(4, remainingBalance);
+            // Remove any existing entry for the patient in PaidCustomers
+            String deleteExistingQuery = "DELETE FROM PaidCustomers WHERE patient_id = ?;";
+            PreparedStatement deleteStatement = con.prepareStatement(deleteExistingQuery);
+            deleteStatement.setInt(1, patientID);
+            deleteStatement.executeUpdate();
 
-            // Provide values for the ON DUPLICATE KEY UPDATE clause (parameters 5 and 6)
-            updatePaymentStatement.setBoolean(5, paymentStatus); // For payment_status
-            updatePaymentStatement.setDouble(6, remainingBalance); // For remaining_balance
-
-            updatePaymentStatement.executeUpdate();
+            // Insert the updated payment status and remaining balance into the PaidCustomers table
+            String insertPaymentQuery = """
+    INSERT INTO PaidCustomers (patient_id, payment_status, remaining_balance)
+    VALUES (?, ?, ?);
+    """;
+            PreparedStatement insertPaymentStatement = con.prepareStatement(insertPaymentQuery);
+            insertPaymentStatement.setInt(1, patientID);
+            insertPaymentStatement.setBoolean(2, paymentStatus);
+            insertPaymentStatement.setDouble(3, remainingBalance);
+            insertPaymentStatement.executeUpdate();
 
             // Print the result for verification
             System.out.println("Bill processed for Patient ID: " + patientID);
