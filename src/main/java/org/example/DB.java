@@ -452,58 +452,70 @@ public class DB {
         try {
             con.setAutoCommit(true);
 
-            // Query to calculate the total price
+            // Step 1: Delete from Billing table
+            String deleteQuery = """
+            DELETE FROM Billing
+            WHERE patient_ID = ?;
+        """;
+            try (PreparedStatement deleteStatement = con.prepareStatement(deleteQuery)) {
+                deleteStatement.setInt(1, patientID);
+                deleteStatement.executeUpdate();
+            }
+
+            // Step 2: Query to calculate the total expenses
             String totalQuery = """
-                SELECT 
-                    COALESCE(ms_expenses.total_services, 0) + COALESCE(me_expenses.total_medicines, 0) AS total_expenses
-                FROM 
-                    Patient p
-                LEFT JOIN (
-                    SELECT 
-                        ms.patient_ID,
-                        SUM(mst.Price) AS total_services
-                    FROM 
-                        MedicalServices ms
-                    JOIN MedicalServicesTags mst ON ms.mst_ID = mst.mst_ID
-                    GROUP BY 
-                        ms.patient_ID
-                ) ms_expenses ON p.patient_ID = ms_expenses.patient_ID
-                LEFT JOIN (
-                    SELECT 
-                        patient_ID,
-                        SUM(total_cost) AS total_medicines
-                    FROM 
-                        MedicineExpenses
-                    GROUP BY 
-                        patient_ID
-                ) me_expenses ON p.patient_ID = me_expenses.patient_ID
-                WHERE 
-                    p.patient_ID = ?;
-                """;
+            SELECT
+                COALESCE(ms_expenses.total_services, 0) + COALESCE(me_expenses.total_medicines, 0) AS total_expenses
+            FROM
+                Patient p
+            LEFT JOIN (
+                SELECT
+                    ms.patient_ID,
+                    SUM(mst.Price) AS total_services
+                FROM
+                    MedicalServices ms
+                JOIN MedicalServicesTags mst ON ms.mst_ID = mst.mst_ID
+                GROUP BY
+                    ms.patient_ID
+            ) ms_expenses ON p.patient_ID = ms_expenses.patient_ID
+            LEFT JOIN (
+                SELECT
+                    patient_ID,
+                    SUM(total_cost) AS total_medicines
+                FROM
+                    MedicineExpenses
+                GROUP BY
+                    patient_ID
+            ) me_expenses ON p.patient_ID = me_expenses.patient_ID
+            WHERE
+                p.patient_ID = ?;
+        """;
 
-            PreparedStatement totalStatement = con.prepareStatement(totalQuery);
-            totalStatement.setInt(1, patientID);
-            ResultSet totalResult = totalStatement.executeQuery();
+            try (PreparedStatement totalStatement = con.prepareStatement(totalQuery)) {
+                totalStatement.setInt(1, patientID);
+                try (ResultSet totalResult = totalStatement.executeQuery()) {
+                    if (totalResult.next()) {
+                        totalExpenses = totalResult.getDouble("total_expenses");
+                        if (totalExpenses == 0) {
+                            System.out.println("No services or medicines detected for patient ID: " + patientID);
+                            return -1; // Return -1 if no expenses are found
+                        }
 
-            if (totalResult.next()) {
-                totalExpenses = totalResult.getDouble("total_expenses");
-                if (totalExpenses == 0) {
-                    System.out.println("No services or medicines detected for patient ID: " + patientID);
-                    return -1; // Return -1 if no expenses are found
+                        // Step 3: Insert the total into the Billing table
+                        String insertQuery = """
+                        INSERT INTO Billing (patient_id, expenses)
+                        VALUES (?, ?);
+                    """;
+                        try (PreparedStatement insertStatement = con.prepareStatement(insertQuery)) {
+                            insertStatement.setInt(1, patientID);
+                            insertStatement.setDouble(2, totalExpenses);
+                            insertStatement.executeUpdate();
+                        }
+                    } else {
+                        System.out.println("No patient found with ID: " + patientID);
+                        return -1; // Return -1 if no patient found
+                    }
                 }
-
-                // Insert the total into the Billing table
-                String insertQuery = """
-                INSERT INTO Billing (patient_id, expenses)
-                VALUES (?, ?);
-                """;
-                PreparedStatement insertStatement = con.prepareStatement(insertQuery);
-                insertStatement.setInt(1, patientID);
-                insertStatement.setDouble(2, totalExpenses);
-                insertStatement.executeUpdate();
-            } else {
-                System.out.println("No patient found with ID: " + patientID);
-                return -1; // Return -1 if no patient found
             }
         } catch (SQLException e) {
             System.out.println("Error during database operation: " + e.getMessage());
@@ -518,15 +530,15 @@ public class DB {
 
     public void FinalBill(int patientID, double amount, double totalcost) {
         try {
-            // Insert the total cost into the Billing table
-            String insertBillQuery = """
-    INSERT INTO Billing (patient_id, expenses)
-    VALUES (?, ?);
-    """;
-            PreparedStatement insertBillStatement = con.prepareStatement(insertBillQuery);
-            insertBillStatement.setInt(1, patientID);
-            insertBillStatement.setDouble(2, totalcost);
-            insertBillStatement.executeUpdate();
+//            // Insert the total cost into the Billing table
+//            String insertBillQuery = """
+//    INSERT INTO Billing (patient_id, expenses)
+//    VALUES (?, ?);
+//    """;
+//            PreparedStatement insertBillStatement = con.prepareStatement(insertBillQuery);
+//            insertBillStatement.setInt(1, patientID);
+//            insertBillStatement.setDouble(2, totalcost);
+//            insertBillStatement.executeUpdate();
 
             // Check if the amount paid matches the total cost
             boolean paymentStatus = false;
@@ -553,7 +565,7 @@ public class DB {
             PreparedStatement insertPaymentStatement = con.prepareStatement(insertPaymentQuery);
             insertPaymentStatement.setInt(1, patientID);
             insertPaymentStatement.setBoolean(2, paymentStatus);
-            insertPaymentStatement.setDouble(3, remainingBalance);
+           insertPaymentStatement.setDouble(3, remainingBalance);
             insertPaymentStatement.executeUpdate();
 
             // Print the result for verification
@@ -569,6 +581,66 @@ public class DB {
             e.printStackTrace();
         }
     }
+
+
+
+    public double CheckBalance(int PatientID) {
+        double remainingBalance = -1;
+        try {
+
+            String query = "SELECT expenses FROM Billing WHERE patient_id = ?";
+
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+
+            preparedStatement.setInt(1, PatientID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                remainingBalance = resultSet.getDouble("expenses");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error during database insert: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return remainingBalance;
+    }
+
+
+    public double CheckBill(int PatientID) {
+        double remainingBalance = -1; // Default value if no data is found
+        String totalQuery = """
+        SELECT 
+            COALESCE(b.expenses, 0) AS expenses
+        FROM 
+            Billing b
+        WHERE 
+            b.patient_ID = ?;
+        """;
+
+        // Preparing the statement
+        try (PreparedStatement preparedStatement = con.prepareStatement(totalQuery)) {
+            preparedStatement.setInt(1, PatientID); // Set patient ID in query
+
+            // Executing the query
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    remainingBalance = resultSet.getDouble("expenses");
+                    System.out.println("Expenses for Patient ID " + PatientID + ": " + remainingBalance);
+                } else {
+                    System.out.println("No data found for Patient ID " + PatientID);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error executing query: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return remainingBalance;
+    }
+
+
 
 
 
