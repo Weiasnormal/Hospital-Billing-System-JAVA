@@ -12,6 +12,11 @@ import java.util.Scanner;
 
 public class DB {
     Connection con;
+    public static String wColor = "\033[1;97m";
+    public static String errorColor = "\033[0;91m";
+    public static String successColor = "\033[0;92m";
+    public static String loadingColor = "\033[0;37m";
+    public static String titleColor = "\033[1;93m";
 
     public DB() {
         try {
@@ -57,7 +62,7 @@ public class DB {
 
 //            Execute the insert
             preparedStatement.executeUpdate();
-            System.out.println("Patient Registered Successfully!");
+            System.out.println(successColor + "Patient Registered Successfully!");
         }
         catch (SQLException e) {
             System.out.println("Error during database insert: " + e.getMessage());
@@ -122,7 +127,7 @@ public class DB {
         // this method checks if department and service already exsits for the selected
         // patient
         boolean exists = false;
-        String ewan = "\n" + "\033[1;32m" + "Department and Service successfully added to patient\n";
+        String ewan = successColor + "\nDepartment and Service successfully added to patient\n";
         try {
 
             String query = "SELECT * FROM MedicalServices WHERE patient_ID = ? AND mst_ID = ?";
@@ -136,7 +141,7 @@ public class DB {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                ewan = "\n\nDepartment and service already exists for this patient.";
+                ewan = wColor + "\n\nDepartment and service already exists for this patient.";
                 exists = true;
             }
         } catch (SQLException e) {
@@ -149,7 +154,7 @@ public class DB {
 
     public void DepartmentServicesDelete(int patientId, int mstId) {
         // Message to show the result of the operation
-        String message = "\n\033[1;32mDepartment and Service successfully removed\n";
+        String message = successColor + "\nDepartment and Service successfully removed\n";
 
         try {
             // Check if the department and service exist for the patient
@@ -161,7 +166,7 @@ public class DB {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (!resultSet.next()) {
-                message = "Department and service do not exist for this patient.";
+                message = errorColor + "Department and service do not exist for this patient.";
             } else {
                 // Delete the record if it exists
                 String deleteQuery = "DELETE FROM MedicalServices WHERE patient_ID = ? AND services_ID = ?";
@@ -181,7 +186,7 @@ public class DB {
 
     public void MedicineDelete(int patientId, int medID) {
         // Message to show the result of the operation
-        String message = "\n\033[1;32mDepartment and Service successfully removed\n";
+        String message = successColor + "\nDepartment and Service successfully removed\n";
 
         try {
             // Check if the department and service exist for the patient
@@ -193,7 +198,7 @@ public class DB {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (!resultSet.next()) {
-                message = "Department and service do not exist for this patient.";
+                message = errorColor + "Department and service do not exist for this patient.";
             } else {
                 // Delete the record if it exists
                 String deleteQuery = "DELETE FROM MedicineExpenses WHERE patient_ID = ? AND med_id = ?";
@@ -244,8 +249,8 @@ public class DB {
             boolean hasResults = false;
 
 //            System.out.println("Patient ID: " + Id);
-            System.out.println("\n=== Department Visited and Services Used ===");
-            System.out.println("---------------");
+            System.out.println( "\n" + titleColor + "⫍⫍" + wColor +" Department Visited and Services Used " + titleColor + "⫎⫎" + wColor);
+            System.out.println("\f-------------------------------------------\f");
 
             while (resultSet.next()) {
                 hasResults = true;
@@ -259,13 +264,13 @@ public class DB {
                 System.out.println("Department   : " + department);
                 System.out.println("Service Name : " + serviceName);
                 System.out.println("Price        : " + price);
-                System.out.println("---------------");
+                System.out.println("\f-------------------------------------------\f");
             }
 
             if (!hasResults) {
-                System.out.println("No services found for patient ID: " + Id);
+                System.out.println(errorColor + "No services found for patient ID: " + Id);
             } else {
-                System.out.println("\nPress enter to continue...");
+                System.out.println(loadingColor + "\nPress enter to continue...");
                 Scanner scanner = new Scanner(System.in);
                 scanner.nextLine();
             }
@@ -295,8 +300,8 @@ public class DB {
         boolean hasResults = false;
 
 //        System.out.println("Patient ID: " + Id);
-        System.out.println("\n=== Medicine ===");
-        System.out.println("---------------");
+        System.out.println( "\n" + titleColor + "⫍⫍⫍⫍⫍⫍⫍⫍⫍" + wColor +"    Medicine    " + titleColor + "⫎⫎⫎⫎⫎⫎⫎⫎" + wColor);
+        System.out.println("\f-------------------------------------------\f");
 
         while (resultSet.next()) {
             hasResults = true;
@@ -310,13 +315,13 @@ public class DB {
             System.out.println("Medicine Name : " + medicine_name);
             System.out.println("Quantity      : " + quantity);
             System.out.println("price         : " + total_cost);
-            System.out.println("---------------");
+            System.out.println("\f-------------------------------------------\f");
         }
 
         if (!hasResults) {
-            System.out.println("No services found for patient ID: " + Id);
+            System.out.println(errorColor + "No services found for patient ID: " + Id);
         } else {
-            System.out.println("\nPress enter to continue...");
+            System.out.println(loadingColor + "\nPress enter to continue...");
             Scanner scanner = new Scanner(System.in);
             scanner.nextLine();
         }
@@ -358,7 +363,7 @@ public class DB {
 
             resultSet.next();
             if(!resultSet.isLast())
-                System.out.println("No User with this ID found");
+                System.out.println(wColor + "No User with this ID found");
             else
                 displayUserInformation(resultSet);
         }
@@ -371,7 +376,7 @@ public class DB {
     public void displayUserInformation(ResultSet resultSet)
     {
         try {
-            System.out.println("-------------------------------------");
+            System.out.println(wColor + "----------------------------------------");
             do
             {
                 int patientId = resultSet.getInt("patient_ID");
@@ -388,7 +393,7 @@ public class DB {
                 System.out.println("Gender         : " + gender);
                 System.out.println("Contact Number : " + contactNumber);
                 System.out.println("Address        : " + address);
-                System.out.println("-------------------------------------");
+                System.out.println("----------------------------------------");
             }while (resultSet.next());
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -497,7 +502,7 @@ public class DB {
                     if (totalResult.next()) {
                         totalExpenses = totalResult.getDouble("total_expenses");
                         if (totalExpenses == 0) {
-                            System.out.println("No services or medicines detected for patient ID: " + patientID);
+                            System.out.println(wColor + "No services or medicines detected for patient ID: " + patientID);
                             return -1; // Return -1 if no expenses are found
                         }
 
@@ -512,7 +517,7 @@ public class DB {
                             insertStatement.executeUpdate();
                         }
                     } else {
-                        System.out.println("No patient found with ID: " + patientID);
+                        System.out.println(wColor + "No patient found with ID: " + patientID);
                         return -1; // Return -1 if no patient found
                     }
                 }
@@ -569,7 +574,7 @@ public class DB {
             insertPaymentStatement.executeUpdate();
 
             // Print the result for verification
-            System.out.println("-------------------------------------------------------");
+            System.out.println(wColor + "-------------------------------------------------------");
             System.out.println("Bill processed for Patient ID : " + patientID);
             System.out.println("Total cost                    : " + totalcost);
             System.out.println("Amount paid                   : " + amount);
@@ -627,9 +632,9 @@ public class DB {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     remainingBalance = resultSet.getDouble("expenses");
-                    System.out.println("Expenses for Patient ID " + PatientID + ": " + remainingBalance);
+                    System.out.println(wColor + "Expenses for Patient ID " + PatientID + ": " + remainingBalance);
                 } else {
-                    System.out.println("No data found for Patient ID " + PatientID);
+                    System.out.println(wColor + "No data found for Patient ID " + PatientID);
                 }
             }
         } catch (SQLException e) {

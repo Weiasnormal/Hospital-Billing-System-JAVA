@@ -7,23 +7,29 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class PatientInformation extends PatientInformationTemplate {
+    public static String wColor = "\033[1;97m";
+    public static String errorColor = "\033[0;91m";
+    public static String loadingColor = "\033[0;37m";
+    public static String titleborderColor = "\033[1;96m";
+    public static String titleColor = "\033[1;93m";
+
     @Override
     public void PatientMain(){
-        System.out.println("\033[1;96m" +
+        System.out.println(titleborderColor +
                 """
                 
                 
-                +======================================+"""+ "\033[1;33m" + """
+                +======================================+"""+ titleColor + """
                 
                 ║        Manage Patient Records        ║
-                """ + "\033[1;96m" +"""
-                +======================================+""" + "\u001B[0m");
-        System.out.println("\033[1;97m" + """
+                """ + titleborderColor +"""
+                +======================================+""");
+        System.out.println(wColor + """
         Please select an option:
         [1] Register a Patient
         [2] View Patient List
         [3] Search for a Patient
-        [4] Return to Main Menu""" + "\u001B[0m"); // view all patients is only temporary here for testing
+        [4] Return to Main Menu"""); // view all patients is only temporary here for testing
         System.out.println("\f--------------------------------------\f");
         System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
@@ -32,28 +38,34 @@ public class PatientInformation extends PatientInformationTemplate {
             case "1":
                 RegisterNewPatient();
             case "2":
+                System.out.println();
+                System.out.println(loadingColor + """                       
+                        ·········································
+                        Please wait a moment for the Patient List
+                        ·········································""");
                 ViewAllPatients();
             case "3":
                 SearchPatient();
             case "4":
                 UserInterface.MainMenu();
             default:
-                System.out.println("\n\nPlease enter a valid input!");
+                System.out.println(errorColor + "\n\nPlease enter a valid input...");
                 PatientMain();
         }
     }
 
     @Override
     public void RegisterNewPatient() {
-        System.out.println( "\n" + "\033[1;93m" + "⫍⫍⫍⫍" + "\033[1;97m" +"   Register a Patient   " + "\033[1;93m" + "⫎⫎⫎⫎" + "\u001B[0m");
-        System.out.println("\033[1;97m" + """
+        System.out.println( "\n" + titleColor + "⫍⫍⫍⫍" + wColor +"   Register a Patient   " + titleColor + "⫎⫎⫎⫎");
+        System.out.println(wColor + """
         [1] Continue
-        [2] Back""" + "\u001B[0m");
+        [2] Back""");
         System.out.println("\f-------------------------------------\f");
         System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         if(!(input.equals("1") || input.equals("2"))) {
+            System.out.println(errorColor + "\nPlease enter a valid input...");
             RegisterNewPatient(); // serves as a error handler
         }
         if(input.equals("2")){
@@ -68,19 +80,23 @@ public class PatientInformation extends PatientInformationTemplate {
 
     private void NewPatient(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\033[1;96m" +
+        System.out.println(titleborderColor +
                 """
                 
                 
-                +=====================================+"""+ "\033[1;33m" + """
+                +=====================================+"""+ titleColor + """
                 
                 ║      Input Patient Information      ║
-                """ + "\033[1;96m" +"""
-                +=====================================+""" + "\u001B[0m");
-
+                """ + titleborderColor +"""
+                +=====================================+""");
+        System.out.println();
+        System.out.println(loadingColor + """                       
+                        ·······································
+                        Please Wait. Loading the form...
+                        ·······································\n""");
         try {
             DB db = new DB();
-            System.out.print("Patient ID: ");
+            System.out.print(wColor + "Patient ID: ");
             int ID = scanner.nextInt();
             if(db.PatientIDExists(ID)){
                 System.out.print("Patient ID Already Exists ");
@@ -101,41 +117,49 @@ public class PatientInformation extends PatientInformationTemplate {
 
             Patient patient = new Patient(ID, name, age, gender, contact_number, address);
             UserInterface.ConsoleClear();
-            System.out.println("Processing...");
+            System.out.println(loadingColor + "\nProcessing...");
             boolean isValid = patient.Validation();
             db.InsertToDatabase(isValid, ID, name, age, gender, contact_number, address);
             UserInterface.MainMenu();
         }
         catch (InputMismatchException e){
-            System.out.println("Input invalid, try again.");
+            System.out.println(errorColor + "Input invalid, try again.");
             PatientMain();
         }
     }
 
     @Override
     public void SearchPatient() {
-        String error = "\nInput invalid, please enter a numeric ID.";
+        String error = errorColor + "\nInput invalid, please enter a numeric ID.";
         try {
-            System.out.println("\033[1;96m" +
+            System.out.println(titleborderColor +
                 """
                 
                 
-                +======================================+"""+ "\033[1;33m" + """
+                +======================================+"""+ titleColor + """
                 
                 ║      Search Patient Information      ║
-                """ + "\033[1;96m" +"""
-                +======================================+""" + "\u001B[0m");
-            System.out.print("Enter Patient ID: ");
+                """ + titleborderColor +"""
+                +======================================+""");
+            System.out.print(wColor + "Enter Patient ID: ");
             Scanner scanner = new Scanner(System.in);
             String id = scanner.nextLine();
+
 
             if(id == null || Integer.parseInt(id) < 1) {
                 System.out.println(error);
                 SearchPatient();
             }
-
+            System.out.println();
+            System.out.println(loadingColor + """                       
+                        ········································
+                        Please Wait. Searching for patient...
+                        ········································\n""");
             DB db = new DB();
+
             db.GetUserInformation(Integer.parseInt(id));
+            System.out.println(loadingColor + "Press enter to continue...");
+            scanner.nextLine();
             PatientMain();
         }
         catch (InputMismatchException e){
@@ -153,18 +177,18 @@ public class PatientInformation extends PatientInformationTemplate {
         DB db = new DB();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("\033[1;96m" +
+        System.out.println(titleborderColor +
                 """
                 
                 
-                +=====================================+"""+ "\033[1;33m" + """
+                +======================================+"""+ titleColor + """
                 
-                ║            Patient List             ║
-                """ + "\033[1;96m" +"""
-                +=====================================+""" + "\u001B[0m");
+                ║             Patient List             ║
+                """ + titleborderColor +"""
+                +======================================+""");
 
         db.GetUserInformation();
-        System.out.println("Press enter to continue...");
+        System.out.println(loadingColor + "Press enter to continue...");
         scanner.nextLine(); // if enter key is pressed, it will continue and execute the next line of code
         PatientMain();
     }

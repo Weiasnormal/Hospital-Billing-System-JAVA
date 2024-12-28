@@ -6,6 +6,13 @@ import java.util.Scanner;
 
 public class PatientDetails extends PatientDetailsTemplate {
     int selectedId;
+    public static String wColor = "\033[1;97m";
+    public static String errorColor = "\033[0;91m";
+    public static String successColor = "\033[0;92m";
+    public static String loadingColor = "\033[0;37m";
+    public static String titleborderColor = "\033[1;96m";
+    public static String titleColor = "\033[1;93m";
+
     @Override
     public void DeptServiceMain() {
         selectedId = CheckIfPatientIdExists(); // check muna if patient id exists; no >> return main menu; yes >> hold ID and continue program
@@ -14,25 +21,31 @@ public class PatientDetails extends PatientDetailsTemplate {
 
     private int CheckIfPatientIdExists() {
         DB db = new DB();
-        System.out.println("\033[1;96m" +
+        System.out.println(titleborderColor +
                 """
                 
                 
-                +=====================================+"""+ "\033[1;33m" + """
+                +=====================================+"""+ titleColor + """
                 
                 ║         Add Patient Details         ║
-                """ + "\033[1;96m" +"""
-                +=====================================+""" + "\u001B[0m");
-        System.out.println("Enter Patient ID");
+                """ + titleborderColor +"""
+                +=====================================+""");
+        System.out.println(wColor + "Enter Patient ID");
         System.out.print("⪀⫸ ");
 
         Scanner scanner = new Scanner(System.in);
         int patientId = scanner.nextInt();
         scanner.nextLine();
 
+        System.out.println();
+        System.out.println(loadingColor + """                       
+                        ········································
+                        Please Wait. Checking for Patient ID...
+                        ········································\n""");
+
         boolean exists = db.PatientIDExists(patientId);
         if (!exists) {
-            System.out.println("Invalid Input or Patient ID does not exist");
+            System.out.println(errorColor + "Invalid Input or Patient ID does not exist");
             UserInterface.MainMenu();
         }
         return patientId;
@@ -41,20 +54,20 @@ public class PatientDetails extends PatientDetailsTemplate {
     private void AddPatientDetails() {
         DB db = new DB();
         GenerateAndDisplayBill bill = new GenerateAndDisplayBill();
-        System.out.println("\033[1;96m" +
+        System.out.println(titleborderColor +
                 """
                 
                 
-                +=====================================+"""+ "\033[1;33m" + """
+                +=====================================+"""+ titleColor + """
                 
                 ║         Add Patient Details         ║
-                """ + "\033[1;96m" +"""
-                +=====================================+""" + "\u001B[0m");
-        System.out.println("\033[1;97m-------------------------------------");
+                """ + titleborderColor +"""
+                +=====================================+""");
+        System.out.println(wColor + "\f-------------------------------------\f");
         System.out.println("[Patient Information]");
         System.out.println("ID   : " + selectedId);
         System.out.println("Name : " + db.GetName(selectedId)); // yung pangalan ay manggagaling from database
-        System.out.println("\033[1;97m" + """
+        System.out.println(wColor + """
         \f-------------------------------------\f
         Please select an option:
         [1] Add Department and Services
@@ -64,7 +77,7 @@ public class PatientDetails extends PatientDetailsTemplate {
         [5] View Bill and Payment Finalization
         [6] Change Patient ID
         [7] Return to Main Menu
-        \f-------------------------------------\f""" + "\u001B[0m");
+        \f-------------------------------------\f""");
         System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
@@ -76,35 +89,55 @@ public class PatientDetails extends PatientDetailsTemplate {
             case 2:
                 AddMedicine();
             case 3:
+                System.out.println();
+                System.out.println(loadingColor + """                       
+                        ········································
+                        Please wait a moment...
+                        ········································\n""");
                 Deletion();
             case 4:
+                System.out.println();
+                System.out.println(loadingColor + """                       
+                        ········································
+                        Please Wait. Retrieving all entries...
+                        ········································\n""");
                 ViewAllEntries();
             case 5:
+                System.out.println();
+                System.out.println(loadingColor + """                       
+                        ········································
+                        Please Wait. Checking for expenses...
+                        ········································\n""");
                 bill.DisplayExpenses(selectedId);
 //            case 6:
 //                GenerateAndDisplayBill.PaymentBill(selectedId);
             case 6:
+                System.out.println();
+                System.out.println(loadingColor + """                       
+                        ········································
+                        Please wait a moment...
+                        ········································\n""");
                 DeptServiceMain();
             case 7:
                 UserInterface.MainMenu();
             default:
-                System.out.println("\n\nPlease enter a valid input!");
+                System.out.println(errorColor + "\n\nPlease enter a valid input");
                 AddPatientDetails();
         }
     }
 
     @Override
     public void AddDepartmentAndServices() {
-        System.out.println("\033[1;96m" +
+        System.out.println(titleborderColor +
                 """
                 
                 
-                +=====================================+"""+ "\033[1;33m" + """
+                +=====================================+"""+ titleColor + """
                 
                 ║      Select Department Visited      ║
-                """ + "\033[1;96m" +"""
-                +=====================================+""" + "\u001B[0m");
-        System.out.println("\033[1;97m" + """
+                """ + titleborderColor +"""
+                +=====================================+""");
+        System.out.println(wColor + """
                 Please select an option:
                 [1]  General Medicine
                 [2]  Cardiology
@@ -117,10 +150,15 @@ public class PatientDetails extends PatientDetailsTemplate {
                 [9]  Maternity
                 [10] Dental
                 [11] Back
-                \f-------------------------------------\f""" + "\u001B[0m");
+                \f-------------------------------------\f""");
         System.out.print("⪀⫸ ");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
+        System.out.println();
+        System.out.println(loadingColor + """                       
+                        ········································
+                        Please Wait. Loading all services...
+                        ········································""");
         DB db = new DB();
         scanner.nextLine();
         ServicesUsed servicesUsed;
@@ -167,16 +205,17 @@ public class PatientDetails extends PatientDetailsTemplate {
                 selected = servicesUsed.addServices();
                 break;
             case 11:
-                AddPatientDetails();
+                CheckIfPatientIdExists(); // eto muna nilagay ko para maayos yung error
+                // AddPatientDetails();
                 break;
             default:
-                System.out.println("\n\nPlease enter a valid input!");
+                System.out.println(errorColor + "\n\nPlease enter a valid input!");
                 AddDepartmentAndServices();
                 break;
         }
 
         if(selected == 0){
-            System.out.println("\n\nAn error has occurred. Please try again!");
+            System.out.println(errorColor + "\n\nAn error has occurred. Please try again!");
             AddPatientDetails();
         }
 
@@ -191,52 +230,54 @@ public class PatientDetails extends PatientDetailsTemplate {
     public void AddMedicine() {
         DB db = new DB();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\033[1;96m" +
+        System.out.println(titleborderColor +
                 """
                 
                 
-                +===============================================+""" + "\033[1;33m" + """
+                +===============================================+""" + titleColor + """
             
             ║           Add  Prescribed  Medicine           ║
-            """ + "\033[1;96m" + """
-            +===============================================+""" + "\u001B[0m");
+            """ + titleborderColor + """
+            +===============================================+""");
         int numberOfMedicine = 0;
 
         // Validate number of medicines input
         while (true) {
             try {
-                System.out.println("How many prescribed medicine do you want to add? (Maximum of 10)");
+                System.out.println(wColor + """
+                        How many prescribed medicine do you 
+                        want to add? (Maximum of 10)""");
                 System.out.print("⪀⫸ ");
                 numberOfMedicine = scanner.nextInt();
                 scanner.nextLine(); // Consume newline
                 if (numberOfMedicine <= 0 || numberOfMedicine > 10) {
-                    System.out.println("\033[1;31mPlease enter a valid number of medicines (between 1 and 10).\033[0m");
+                    System.out.println(errorColor + "Please enter a valid number of medicines (between 1 and 10).");
                 } else {
                     break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("\033[1;31mInvalid input. Please enter a number.\033[0m");
+                System.out.println(errorColor + "Invalid input. Please enter a number.");
                 scanner.nextLine(); // Clear invalid input
             }
         }
 
         for (int i = 0; i < numberOfMedicine; i++) {
-            System.out.println("\f-----------------------------------------------\f");
+            System.out.println(wColor + "\f-----------------------------------------------\f");
             System.out.print("Medicine Name : ");
             String name = scanner.nextLine();
 
             int quantity = 0;
             while (true) {
                 try {
-                    System.out.print("Quantity : ");
+                    System.out.print(wColor + "Quantity : ");
                     quantity = scanner.nextInt();
                     if (quantity > 0) {
                         break;
                     } else {
-                        System.out.println("\033[1;31mPlease enter a positive number.\033[0m");
+                        System.out.println(errorColor + "Please enter a positive number.");
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("\033[1;31mInvalid input. Please enter a valid quantity.\033[0m");
+                    System.out.println(errorColor + "Invalid input. Please enter a valid quantity.");
                     scanner.nextLine(); // Clear invalid input
                 }
             }
@@ -244,46 +285,46 @@ public class PatientDetails extends PatientDetailsTemplate {
             int totalCost = 0;
             while (true) {
                 try {
-                    System.out.print("Total Cost : ");
+                    System.out.print(wColor + "Total Cost : ");
                     totalCost = scanner.nextInt();
                     if (totalCost > 0) {
                         break;
                     } else {
-                        System.out.println("\033[1;31mPlease enter a positive amount.\033[0m");
+                        System.out.println(errorColor + "Please enter a positive amount.");
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("\033[1;31mInvalid input. Please enter a valid cost.\033[0m");
+                    System.out.println(errorColor + "Invalid input. Please enter a valid cost.");
                     scanner.nextLine(); // Clear invalid input
                 }
             }
             scanner.nextLine(); // Consume newline
-            System.out.println("\f-----------------------------------------------\f");
+            System.out.println(wColor + "\f-----------------------------------------------\f");
             db.MedicineExpenses(name, selectedId, quantity, totalCost);
         }
-        System.out.println("\n" + "\033[1;32m" + "Prescribed medicines successfully added!\n");
+        System.out.println(successColor + "\nPrescribed medicines successfully added!\n");
         AddPatientDetails();
     }
 
     @Override
     public void ViewAllEntries() {
         DB db = new DB();
-        System.out.println("\033[1;96m" +
+        System.out.println(titleborderColor +
             """
             
             
-            +===============================================+""" + "\033[1;33m" + """
+            +===============================================+""" + titleColor + """
             
             ║        Visit Details and Services Used        ║
-            """ + "\033[1;96m" + """
-            +===============================================+""" + "\u001B[0m");
-        System.out.println("[Patient Information]");
+            """ + titleborderColor + """
+            +===============================================+""");
+        System.out.println(wColor + "[Patient Information]");
         System.out.println("ID   : " + selectedId);
         System.out.println("Name : " + db.GetName(selectedId));
-        System.out.println("---------------");
+        System.out.println(wColor + "\f-----------------------------------------------\f");
 
         db.FetchServices(selectedId);
         db.FetchMedicine(selectedId);
-        System.out.println("\nPress enter to continue...");
+        System.out.println(loadingColor + "\nPress enter to continue...");
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
         AddPatientDetails();
@@ -297,29 +338,29 @@ public class PatientDetails extends PatientDetailsTemplate {
         int selected = 0;
         while (true) {
             try {
-                System.out.println("\033[1;96m" +
+                System.out.println(titleborderColor +
                     """
                     
                     
-                    +=====================================+""" + "\033[1;33m" + """
+                    +=====================================+""" + titleColor + """
                     
                     ║        Select what to Delete        ║
-                    """ + "\033[1;96m" + """
-                    +=====================================+""" + "\u001B[0m");
-                System.out.println("\033[1;97m" + """
+                    """ + titleborderColor + """
+                    +=====================================+""");
+                System.out.println(wColor + """
                     Please select an option:
                     [1] Charged Departments and Services
                     [2] Charged Medicines
-                    \f-------------------------------------\f""" + "\u001B[0m");
+                    \f-------------------------------------\f""");
                 System.out.print("⪀⫸ ");
                 selected = scanner.nextInt();
                 if (selected == 1 || selected == 2) {
                     break;
                 } else {
-                    System.out.println("\033[1;31mInvalid option. Please select 1 or 2.\033[0m");
+                    System.out.println(errorColor + "Invalid option. Please select 1 or 2.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("\033[1;31mInvalid input. Please enter a valid number.\033[0m");
+                System.out.println(errorColor + "Invalid input. Please enter a valid number.");
                 scanner.nextLine(); // Clear invalid input
             }
         }
@@ -327,7 +368,7 @@ public class PatientDetails extends PatientDetailsTemplate {
         switch (selected) {
             case 1 -> {
                 db.FetchServices(selectedId);
-                System.out.println("\nPlease enter the service ID you want to delete");
+                System.out.println(wColor + "\nPlease enter the service ID you want to delete");
                 System.out.print("⪀⫸ ");
                 while (true) {
                     try {
@@ -335,7 +376,7 @@ public class PatientDetails extends PatientDetailsTemplate {
                         db.DepartmentServicesDelete(selectedId, mst_id);
                         break;
                     } catch (InputMismatchException e) {
-                        System.out.println("\033[1;31mInvalid input. Please enter a valid service ID.\033[0m");
+                        System.out.println(errorColor + "Invalid input. Please enter a valid service ID.\033[0m");
                         scanner.nextLine(); // Clear invalid input
                     }
                 }
@@ -343,7 +384,7 @@ public class PatientDetails extends PatientDetailsTemplate {
             }
             case 2 -> {
                 db.FetchMedicine(selectedId);
-                System.out.println("\nPlease enter the medicine ID you want to delete");
+                System.out.println(wColor + "\nPlease enter the medicine ID you want to delete");
                 System.out.print("⪀⫸ ");
                 while (true) {
                     try {
@@ -351,7 +392,7 @@ public class PatientDetails extends PatientDetailsTemplate {
                         db.MedicineDelete(selectedId, med_id);
                         break;
                     } catch (InputMismatchException e) {
-                        System.out.println("\033[1;31mInvalid input. Please enter a valid medicine ID.\033[0m");
+                        System.out.println(errorColor + "Invalid input. Please enter a valid medicine ID.\033[0m");
                         scanner.nextLine(); // Clear invalid input
                     }
                 }
