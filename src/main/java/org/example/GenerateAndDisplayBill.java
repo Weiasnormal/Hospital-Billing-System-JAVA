@@ -115,7 +115,7 @@ public class GenerateAndDisplayBill {
 
 
 
-    public static void DisplayBill(int patientID) {
+    public void DisplayBill(int patientID) {
         DB db = new DB();
         PatientDetails patient = new PatientDetails();
         Scanner sc = new Scanner(System.in);
@@ -134,7 +134,7 @@ public class GenerateAndDisplayBill {
                         PaymentBill(patientID);
                         break;
                     } else if (choice.equalsIgnoreCase("N")) {
-                        patient.DeptServiceMain();
+                        DisplayExpenses(patientID);
                         break;
                     } else {
                         System.out.println("\033[1;31mInvalid Choice. Please enter 'Y' or 'N'.\033[0m");

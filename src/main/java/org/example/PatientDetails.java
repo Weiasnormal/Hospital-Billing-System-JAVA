@@ -205,8 +205,7 @@ public class PatientDetails extends PatientDetailsTemplate {
                 selected = servicesUsed.addServices();
                 break;
             case 11:
-                CheckIfPatientIdExists(); // eto muna nilagay ko para maayos yung error
-                // AddPatientDetails();
+                 AddPatientDetails();
                 break;
             default:
                 System.out.println(errorColor + "\n\nPlease enter a valid input!");
