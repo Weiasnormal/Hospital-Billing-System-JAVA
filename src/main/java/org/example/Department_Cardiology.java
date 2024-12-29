@@ -4,6 +4,11 @@ package org.example;
 import java.util.Scanner;
 
 public class Department_Cardiology extends ServicesUsed{
+    public static String wColor = "\033[1;97m";
+    public static String errorColor = "\033[0;91m";
+    public static String titleColor = "\033[1;93m";
+    public static String titleborderColor = "\033[1;96m";
+
     @Override
     public double addServices() {
         String departmentName = "Cardiology";
@@ -11,22 +16,22 @@ public class Department_Cardiology extends ServicesUsed{
         Scanner scanner = new Scanner(System.in);
 
 //        do {
-        System.out.println("\033[1;96m" +
+        System.out.println(titleborderColor +
                 """
                 
                 
-                +=====================================+"""+ "\033[1;33m" + """
+                +=====================================+"""+ titleColor + """
                 
                 ║          Add Services Used          ║
-                """ + "\033[1;96m" +"""
-                +=====================================+""" + "\u001B[0m");
-            System.out.println("\033[1;97m" + """
+                """ + titleborderColor +"""
+                +=====================================+""");
+            System.out.println(wColor + """
                     [1] Cardiology Consultation
                     [2] ECG (Electrocardiogram)
                     [3] Echocardiogram
                     [4] Stress Test
                     [5] Back
-                    \f-------------------------------------\f""" + "\u001B[0m");
+                    \f-------------------------------------\f""");
             System.out.print("⪀⫸ ");
             int option = scanner.nextInt();
             String serviceUsed;
@@ -54,7 +59,7 @@ public class Department_Cardiology extends ServicesUsed{
                     patientDetails.AddDepartmentAndServices();
 //                    return servicesUsed.toString(); // Exit the current department
                 default:
-                    System.out.println("\n\nPlease enter a valid input!");
+                    System.out.println(errorColor + "\n\nPlease enter a valid input!");
                     addServices();
 
 //                    continue; // Skip the rest of the loop and ask again

@@ -157,7 +157,7 @@ public class PatientDetails extends PatientDetailsTemplate {
         System.out.println();
         System.out.println(loadingColor + """                       
                         ········································
-                        Please Wait. Loading all services...
+                        Please wait a moment...
                         ········································""");
         DB db = new DB();
         scanner.nextLine();
