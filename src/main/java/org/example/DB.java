@@ -45,7 +45,6 @@ public class DB {
 
         try {
             con.setAutoCommit(true);
-            Statement statement = con.createStatement();
             String insertQuery = """
             INSERT INTO Patient (patient_ID, age, gender, patient_name, contact_number, address)
             VALUES (?, ?, ?, ?, ?, ?); """;
@@ -535,15 +534,6 @@ public class DB {
 
     public void FinalBill(int patientID, double amount, double totalcost) {
         try {
-//            // Insert the total cost into the Billing table
-//            String insertBillQuery = """
-//    INSERT INTO Billing (patient_id, expenses)
-//    VALUES (?, ?);
-//    """;
-//            PreparedStatement insertBillStatement = con.prepareStatement(insertBillQuery);
-//            insertBillStatement.setInt(1, patientID);
-//            insertBillStatement.setDouble(2, totalcost);
-//            insertBillStatement.executeUpdate();
 
             // Check if the amount paid matches the total cost
             boolean paymentStatus = false;
