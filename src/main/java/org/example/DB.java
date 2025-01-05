@@ -326,7 +326,7 @@ public class DB {
         boolean hasResults = false;
 
 //        System.out.println("Patient ID: " + Id);
-        System.out.println( "\n" + titleColor + "⫍⫍⫍⫍⫍⫍⫍⫍⫍" + wColor +"    Medicine    " + titleColor + "⫎⫎⫎⫎⫎⫎⫎⫎" + wColor);
+        System.out.println( "\n" + titleColor + "⫍⫍⫍⫍⫍⫍⫍⫍" + wColor +"    Medicine    " + titleColor + "⫎⫎⫎⫎⫎⫎⫎⫎" + wColor);
         System.out.println("\f-------------------------------------------\f");
 
         while (resultSet.next()) {
