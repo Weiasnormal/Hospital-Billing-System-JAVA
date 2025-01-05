@@ -56,6 +56,8 @@ public class PatientInformation extends PatientInformationTemplate {
 
     @Override
     public void RegisterNewPatient() {
+        DB db = new DB();
+        db.SetSessionTimer();
         System.out.println( "\n" + titleColor + "⫍⫍⫍⫍" + wColor +"   Register a Patient   " + titleColor + "⫎⫎⫎⫎");
         System.out.println(wColor + """
         [1] Continue
@@ -80,6 +82,8 @@ public class PatientInformation extends PatientInformationTemplate {
 
     private void NewPatient(){
         Scanner scanner = new Scanner(System.in);
+        DB db = new DB();
+        db.SetSessionTimer();
         System.out.println(titleborderColor +
                 """
                 
@@ -95,7 +99,6 @@ public class PatientInformation extends PatientInformationTemplate {
                         Please Wait. Loading the form...
                         ·······································\n""");
         try {
-            DB db = new DB();
             System.out.print(wColor + "Patient ID: ");
             int ID = scanner.nextInt();
             if(db.PatientIDExists(ID)){
@@ -133,10 +136,10 @@ public class PatientInformation extends PatientInformationTemplate {
         String error = errorColor + "\nInput invalid, please enter a numeric ID.";
         try {
             System.out.println(titleborderColor +
-                """
-                
-                
-                +======================================+"""+ titleColor + """
+                    """
+                    
+                    
+                    +======================================+"""+ titleColor + """
                 
                 ║      Search Patient Information      ║
                 """ + titleborderColor +"""

@@ -21,6 +21,7 @@ public class PatientDetails extends PatientDetailsTemplate {
 
     private int CheckIfPatientIdExists() {
         DB db = new DB();
+        db.SetSessionTimer();
         System.out.println(titleborderColor +
                 """
                 
@@ -53,6 +54,7 @@ public class PatientDetails extends PatientDetailsTemplate {
 
     private void AddPatientDetails() {
         DB db = new DB();
+        db.SetSessionTimer();
         GenerateAndDisplayBill bill = new GenerateAndDisplayBill();
         System.out.println(titleborderColor +
                 """
@@ -128,6 +130,8 @@ public class PatientDetails extends PatientDetailsTemplate {
 
     @Override
     public void AddDepartmentAndServices() {
+        DB db = new DB();
+        db.SetSessionTimer();
         System.out.println(titleborderColor +
                 """
                 
@@ -159,7 +163,7 @@ public class PatientDetails extends PatientDetailsTemplate {
                         ········································
                         Please wait a moment...
                         ········································""");
-        DB db = new DB();
+
         scanner.nextLine();
         ServicesUsed servicesUsed;
         double selected = 0;
@@ -205,7 +209,7 @@ public class PatientDetails extends PatientDetailsTemplate {
                 selected = servicesUsed.addServices();
                 break;
             case 11:
-                 AddPatientDetails();
+                AddPatientDetails();
                 break;
             default:
                 System.out.println(errorColor + "\n\nPlease enter a valid input!");
@@ -228,6 +232,7 @@ public class PatientDetails extends PatientDetailsTemplate {
     @Override
     public void AddMedicine() {
         DB db = new DB();
+        db.SetSessionTimer();
         Scanner scanner = new Scanner(System.in);
         System.out.println(titleborderColor +
                 """
@@ -307,11 +312,12 @@ public class PatientDetails extends PatientDetailsTemplate {
     @Override
     public void ViewAllEntries() {
         DB db = new DB();
+        db.SetSessionTimer();
         System.out.println(titleborderColor +
-            """
-            
-            
-            +===============================================+""" + titleColor + """
+                """
+                
+                
+                +===============================================+""" + titleColor + """
             
             ║        Visit Details and Services Used        ║
             """ + titleborderColor + """
@@ -332,16 +338,17 @@ public class PatientDetails extends PatientDetailsTemplate {
     @Override
     public void Deletion() {
         DB db = new DB();
+        db.SetSessionTimer();
         Scanner scanner = new Scanner(System.in);
 
         int selected = 0;
         while (true) {
             try {
                 System.out.println(titleborderColor +
-                    """
-                    
-                    
-                    +=====================================+""" + titleColor + """
+                        """
+                        
+                        
+                        +=====================================+""" + titleColor + """
                     
                     ║        Select what to Delete        ║
                     """ + titleborderColor + """

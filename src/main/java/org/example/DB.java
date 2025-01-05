@@ -35,6 +35,32 @@ public class DB {
     }
 
 
+    public void SetSessionTimer() {
+
+        try {
+            con.setAutoCommit(true); // Enable auto-commit
+
+            // Execute the first query
+            String waitTimeoutQuery = "SET SESSION wait_timeout = 3600";
+            try (PreparedStatement preparedStatement = con.prepareStatement(waitTimeoutQuery)) {
+                preparedStatement.executeUpdate();
+            }
+
+            // Execute the second query
+            String interactiveTimeoutQuery = "SET SESSION interactive_timeout = 4200";
+            try (PreparedStatement preparedStatement = con.prepareStatement(interactiveTimeoutQuery)) {
+                preparedStatement.executeUpdate();
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(errorColor + "Error setting session timeouts: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+
     public void InsertToDatabase(boolean availableToInsert , int patientID, String name, int age, String gender, String contactNumber, String address){
         // this method inserts the user information to the database
         // ang ginagawa nitong if statement ay kapag false yung argument passed sa method,
@@ -100,7 +126,7 @@ public class DB {
         // checks if the patient id already exists in the database
         boolean exists = false;
         try {
-            
+
             String query = "SELECT * FROM Patient WHERE patient_ID = ?";
 
             con.setAutoCommit(true);
@@ -116,8 +142,8 @@ public class DB {
             }
         }
         catch (SQLException e) {
-                System.out.println("Error during database insert: " + e.getMessage());
-                e.printStackTrace();
+            System.out.println("Error during database insert: " + e.getMessage());
+            e.printStackTrace();
         }
         return exists;
     }
@@ -328,7 +354,7 @@ public class DB {
     } catch (SQLException e) {
         System.out.println("Error during database insert: " + e.getMessage());
         e.printStackTrace();
-        }
+    }
 
     }
 
@@ -560,7 +586,7 @@ public class DB {
             PreparedStatement insertPaymentStatement = con.prepareStatement(insertPaymentQuery);
             insertPaymentStatement.setInt(1, patientID);
             insertPaymentStatement.setBoolean(2, paymentStatus);
-           insertPaymentStatement.setDouble(3, remainingBalance);
+            insertPaymentStatement.setDouble(3, remainingBalance);
             insertPaymentStatement.executeUpdate();
 
             // Print the result for verification

@@ -17,6 +17,7 @@ public class Patient extends Person {
 
     public boolean Validation(){
         DB db = new DB();
+        db.SetSessionTimer();
         try {
             String query = "SELECT * FROM Patient WHERE patient_ID = ?";
             Connection connection = db.getConnection();
@@ -32,16 +33,16 @@ public class Patient extends Person {
                 return false;
             }
 
-        if(!(Gender.equalsIgnoreCase("male") || Gender.equalsIgnoreCase("female"))) {
-            System.out.println("Invalid Gender!");
-            return false;
-        }
+            if(!(Gender.equalsIgnoreCase("male") || Gender.equalsIgnoreCase("female"))) {
+                System.out.println("Invalid Gender!");
+                return false;
+            }
 
-        if(ContactNumber.length() != 11){
-            System.out.println("Invalid Contact Number!");
-            return false;
-        }
-        return true;
+            if(ContactNumber.length() != 11){
+                System.out.println("Invalid Contact Number!");
+                return false;
+            }
+            return true;
         }
         catch (SQLException e) {
             System.out.println("Error during database insert: " + e.getMessage());
