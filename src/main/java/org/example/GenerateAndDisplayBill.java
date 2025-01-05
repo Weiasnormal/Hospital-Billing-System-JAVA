@@ -10,7 +10,10 @@ public class GenerateAndDisplayBill implements BillingOperations {
     private static double total;
     private static double totalBalance;
     private int patientID;
-
+    public static String wColor = "\033[1;97m";
+    public static String errorColor = "\033[0;91m";
+    public static String titleColor = "\033[1;93m";
+    public static String titleborderColor = "\033[1;96m";
     // Getter for total
     public double getBalance() {
         return totalBalance;
@@ -45,11 +48,11 @@ public class GenerateAndDisplayBill implements BillingOperations {
         System.out.println("=== Generate and Display Bill ===");
 
         try {
-            System.out.println("Enter Patient ID");
+            System.out.println(wColor + "Enter Patient ID");
             setPatientID(sc.nextInt());
             sc.nextLine(); // Consume the newline
         } catch (InputMismatchException e) {
-            System.out.println("\033[1;31mInvalid input. Please enter a valid numeric Patient ID.\033[0m");
+            System.out.println(errorColor + "Invalid input. Please enter a valid numeric Patient ID.\033[0m");
             sc.nextLine(); // Clear invalid input
         }
 
@@ -74,23 +77,23 @@ public class GenerateAndDisplayBill implements BillingOperations {
 
         while (true) {
             try {
-                System.out.println("\033[1;96m" +
+                System.out.println(titleborderColor +
                         """
                 
                 
-                +=====================================+""" + "\033[1;33m" + """
+                +=====================================+""" + titleColor + """
                 
                 ║          Bill and Payment           ║
-                """ + "\033[1;96m" + """
+                """ + titleborderColor + """
                 +=====================================+""" + "\u001B[0m");
 
-                System.out.println("\033[1;97m-------------------------------------");
+                System.out.println( wColor + "---------------------------------------");
                 System.out.println("[Patient Information]");
                 System.out.println("ID   : " + patientID);
                 System.out.println("Name : " + db.GetName(patientID));
                 System.out.println("Total Expenses : " + getTotal());
                 System.out.println("Total Balance : " + getBalance());
-                System.out.println("\033[1;97m" + """
+                System.out.println(wColor + """
                     \f-------------------------------------\f
                     Please select an option:
                     [1] View Services Expenses
@@ -99,7 +102,7 @@ public class GenerateAndDisplayBill implements BillingOperations {
                     [4] Process Payment 
                     [5] Go back to adding patient information
                     [6] Exit to Main Menu
-                    \f-------------------------------------\f""" + "\u001B[0m");
+                    \f-------------------------------------\f""");
                 System.out.print("⪀⫸ ");
 
                 int option = sc.nextInt();
@@ -127,10 +130,10 @@ public class GenerateAndDisplayBill implements BillingOperations {
                         UserInterface.MainMenu();
                         return;
                     default:
-                        System.out.println("\033[1;31mInvalid option. Please choose a valid option.\033[0m");
+                        System.out.println(errorColor + "Invalid option. Please choose a valid option.\033[0m");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("\033[1;31mInvalid input. Please enter a numeric option.\033[0m");
+                System.out.println(errorColor + "Invalid input. Please enter a numeric option.\033[0m");
                 sc.nextLine(); // Clear invalid input
             }
         }
@@ -156,7 +159,7 @@ public class GenerateAndDisplayBill implements BillingOperations {
                     if (getBalance() < 0) {
                         setBalance(0);
                     }
-                    System.out.println("Is the Patient Paying now? (Y/N)");
+                    System.out.println(wColor + "Is the Patient Paying now? (Y/N)");
                     System.out.print("⪀⫸ ");
                     String choice = sc.nextLine();
                     if (choice.equalsIgnoreCase("Y")) {
@@ -166,15 +169,15 @@ public class GenerateAndDisplayBill implements BillingOperations {
                         DisplayExpenses(patientID);
                         break;
                     } else {
-                        System.out.println("\033[1;31mInvalid Choice. Please enter 'Y' or 'N'.\033[0m");
+                        System.out.println(errorColor + "Invalid Choice. Please enter 'Y' or 'N'.\033[0m");
                         DisplayBill(patientID);
                     }
                 } catch (Exception e) {
-                    System.out.println("\033[1;31mAn error occurred. Please try again.\033[0m");
+                    System.out.println(errorColor + "An error occurred. Please try again.\033[0m");
                 }
             }
         } else {
-            System.out.println("Failed to calculate or no expenses found.");
+            System.out.println(errorColor + "Failed to calculate or no expenses found.");
         }
 
         UserInterface.MainMenu();
@@ -189,17 +192,17 @@ public class GenerateAndDisplayBill implements BillingOperations {
         PatientDetails patientDetails = new PatientDetails();
 
         if (getBalance() <= -1) {
-            System.out.println("No record found for Patient ID: " + patientID);
+            System.out.println(wColor + "No record found for Patient ID: " + patientID);
             patientDetails.DeptServiceMain();
             return;
         } else if (getBalance() == 0) {
-            System.out.println("Patient: " + patientID + " has no balance");
+            System.out.println(wColor + "Patient: " + patientID + " has no balance");
             patientDetails.DeptServiceMain();
             return;
         }
 
         System.out.println("\n\n");
-        System.out.println("--------------------------------------");
+        System.out.println(wColor + "--------------------------------------");
         System.out.println("[Patient Information]");
         System.out.println("ID   : " + patientID);
         System.out.println("Name : " + db.GetName(patientID));
@@ -211,17 +214,17 @@ public class GenerateAndDisplayBill implements BillingOperations {
 
         while (true) {
             try {
-                System.out.println("Enter Payment Amount");
+                System.out.println(wColor + "Enter Payment Amount");
                 System.out.print("⪀⫸ ");
                 amount = sc.nextDouble();
                 sc.nextLine(); // Consume the newline
                 if (amount > 0) {
                     break;
                 } else {
-                    System.out.println("\033[1;31mPlease enter a positive amount.\033[0m");
+                    System.out.println(errorColor + "Please enter a positive amount.\033[0m");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("\033[1;31mInvalid input. Please enter a valid numeric amount.\033[0m");
+                System.out.println(errorColor + "Invalid input. Please enter a valid numeric amount.\033[0m");
                 sc.nextLine(); // Clear invalid input
             }
         }

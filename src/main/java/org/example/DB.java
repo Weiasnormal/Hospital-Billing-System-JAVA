@@ -589,12 +589,6 @@ public class DB {
 
             // Check if the amount paid matches the total cost
 
-            boolean paymentStatus = false;
-            double remainingBalance = CheckBalance(patientID);
-            remainingBalance -= amount;
-
-
-
 
             // Remove any existing entry for the patient in PaidCustomers
             String deleteExistingQuery = "DELETE FROM PaidCustomers WHERE patient_id = ?;";
@@ -602,9 +596,16 @@ public class DB {
             deleteStatement.setInt(1, patientID);
             deleteStatement.executeUpdate();
 
-            if (remainingBalance <= 0) {
+
+
+            boolean paymentStatus = false;
+            double remainingBalance = CheckBalance(patientID);
+
+            if (amount >= totalcost) {
                 paymentStatus = true;
                 remainingBalance = 0;  // Payment is equal to total cost
+            } else {
+                remainingBalance -= amount;  // Deduct paid amount from total cost
             }
 
             // Insert the updated payment status and remaining balance into the PaidCustomers table
