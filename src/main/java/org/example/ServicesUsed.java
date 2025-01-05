@@ -37,5 +37,12 @@ public class ServicesUsed {
         return 0;
     }
 
-
+    public void InsertToDatabase(String name) {
+        String[] makeEmSplit = name.split(",");
+        String departmentName = makeEmSplit[0].trim();
+        String serviceUsed = makeEmSplit[1].trim();
+        System.out.println("They have been inserted into the database");
+        System.out.println("Department Name: " + departmentName);
+        System.out.println("Service Used: " + serviceUsed);
+    }
 }
