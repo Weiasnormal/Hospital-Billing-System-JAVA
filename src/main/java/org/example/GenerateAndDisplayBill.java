@@ -8,9 +8,19 @@ import java.util.InputMismatchException;
 public class GenerateAndDisplayBill implements BillingOperations {
 
     private static double total;
+    private static double totalBalance;
     private int patientID;
 
     // Getter for total
+    public double getBalance() {
+        return totalBalance;
+    }
+
+    // Setter for total
+    public void setBalance(double total) {
+        GenerateAndDisplayBill.totalBalance = total;
+    }
+
     public double getTotal() {
         return total;
     }
@@ -49,9 +59,15 @@ public class GenerateAndDisplayBill implements BillingOperations {
     @Override
     public void DisplayExpenses(int patientID) {
         DB db = new DB();
-        setTotal(db.CheckBalance(patientID));
+        db.SetSessionTimer();
+        setTotal(db.CheckTotalExpenses(patientID));
         if (getTotal() < 0) {
             setTotal(0);
+        }
+
+        setBalance(db.CheckBalance(patientID));
+        if (getBalance() < 0) {
+            setBalance(0);
         }
         PatientDetails patientDetails = new PatientDetails();
         Scanner sc = new Scanner(System.in);
@@ -73,6 +89,7 @@ public class GenerateAndDisplayBill implements BillingOperations {
                 System.out.println("ID   : " + patientID);
                 System.out.println("Name : " + db.GetName(patientID));
                 System.out.println("Total Expenses : " + getTotal());
+                System.out.println("Total Balance : " + getBalance());
                 System.out.println("\033[1;97m" + """
                     \f-------------------------------------\f
                     Please select an option:
@@ -122,15 +139,23 @@ public class GenerateAndDisplayBill implements BillingOperations {
     @Override
     public void DisplayBill(int patientID) {
         DB db = new DB();
-        PatientDetails patient = new PatientDetails();
+        db.SetSessionTimer();
         Scanner sc = new Scanner(System.in);
 
         setTotal(db.CheckBill(patientID)); // Call the method with a patient ID
         if (getTotal() != -1) {
-            System.out.println("Total expenses: " + getTotal());
 
             while (true) {
                 try {
+                    setTotal(db.CheckTotalExpenses(patientID));
+                    if (getTotal() < 0) {
+                        setTotal(0);
+                    }
+
+                    setBalance(db.CheckBalance(patientID));
+                    if (getBalance() < 0) {
+                        setBalance(0);
+                    }
                     System.out.println("Is the Patient Paying now? (Y/N)");
                     System.out.print("⪀⫸ ");
                     String choice = sc.nextLine();
@@ -158,15 +183,16 @@ public class GenerateAndDisplayBill implements BillingOperations {
     @Override
     public void PaymentBill(int patientID) {
         DB db = new DB();
+        db.SetSessionTimer();
         Scanner sc = new Scanner(System.in);
         setTotal(db.CheckBill(patientID));
         PatientDetails patientDetails = new PatientDetails();
 
-        if (getTotal() <= -1) {
+        if (getBalance() <= -1) {
             System.out.println("No record found for Patient ID: " + patientID);
             patientDetails.DeptServiceMain();
             return;
-        } else if (getTotal() == 0) {
+        } else if (getBalance() == 0) {
             System.out.println("Patient: " + patientID + " has no balance");
             patientDetails.DeptServiceMain();
             return;
@@ -178,6 +204,7 @@ public class GenerateAndDisplayBill implements BillingOperations {
         System.out.println("ID   : " + patientID);
         System.out.println("Name : " + db.GetName(patientID));
         System.out.println("Total Expenses : " + getTotal());
+        System.out.println("Outstanding Balance : " + getBalance());
         System.out.println("--------------------------------------");
 
         double amount = 0;

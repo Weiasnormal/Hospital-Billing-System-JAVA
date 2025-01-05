@@ -41,7 +41,7 @@ public class DB {
             con.setAutoCommit(true); // Enable auto-commit
 
             // Execute the first query
-            String waitTimeoutQuery = "SET SESSION wait_timeout = 3600";
+            String waitTimeoutQuery = "SET SESSION wait_timeout = 28800";
             try (PreparedStatement preparedStatement = con.prepareStatement(waitTimeoutQuery)) {
                 preparedStatement.executeUpdate();
             }
@@ -68,6 +68,7 @@ public class DB {
         if(!availableToInsert) {
             return;
         }
+
 
         try {
             con.setAutoCommit(true);
@@ -484,8 +485,8 @@ public class DB {
 
             // Step 1: Delete from Billing table
             String deleteQuery = """
-            DELETE FROM Billing
-            WHERE patient_ID = ?;
+        DELETE FROM Billing
+        WHERE patient_ID = ?;
         """;
             try (PreparedStatement deleteStatement = con.prepareStatement(deleteQuery)) {
                 deleteStatement.setInt(1, patientID);
@@ -494,31 +495,31 @@ public class DB {
 
             // Step 2: Query to calculate the total expenses
             String totalQuery = """
+        SELECT
+            COALESCE(ms_expenses.total_services, 0) + COALESCE(me_expenses.total_medicines, 0) AS total_expenses
+        FROM
+            Patient p
+        LEFT JOIN (
             SELECT
-                COALESCE(ms_expenses.total_services, 0) + COALESCE(me_expenses.total_medicines, 0) AS total_expenses
+                ms.patient_ID,
+                SUM(mst.Price) AS total_services
             FROM
-                Patient p
-            LEFT JOIN (
-                SELECT
-                    ms.patient_ID,
-                    SUM(mst.Price) AS total_services
-                FROM
-                    MedicalServices ms
-                JOIN MedicalServicesTags mst ON ms.mst_ID = mst.mst_ID
-                GROUP BY
-                    ms.patient_ID
-            ) ms_expenses ON p.patient_ID = ms_expenses.patient_ID
-            LEFT JOIN (
-                SELECT
-                    patient_ID,
-                    SUM(total_cost) AS total_medicines
-                FROM
-                    MedicineExpenses
-                GROUP BY
-                    patient_ID
-            ) me_expenses ON p.patient_ID = me_expenses.patient_ID
-            WHERE
-                p.patient_ID = ?;
+                MedicalServices ms
+            JOIN MedicalServicesTags mst ON ms.mst_ID = mst.mst_ID
+            GROUP BY
+                ms.patient_ID
+        ) ms_expenses ON p.patient_ID = ms_expenses.patient_ID
+        LEFT JOIN (
+            SELECT
+                patient_ID,
+                SUM(total_cost) AS total_medicines
+            FROM
+                MedicineExpenses
+            GROUP BY
+                patient_ID
+        ) me_expenses ON p.patient_ID = me_expenses.patient_ID
+        WHERE
+            p.patient_ID = ?;
         """;
 
             try (PreparedStatement totalStatement = con.prepareStatement(totalQuery)) {
@@ -533,14 +534,37 @@ public class DB {
 
                         // Step 3: Insert the total into the Billing table
                         String insertQuery = """
-                        INSERT INTO Billing (patient_id, expenses)
-                        VALUES (?, ?);
+                    INSERT INTO Billing (patient_id, expenses)
+                    VALUES (?, ?);
                     """;
                         try (PreparedStatement insertStatement = con.prepareStatement(insertQuery)) {
                             insertStatement.setInt(1, patientID);
                             insertStatement.setDouble(2, totalExpenses);
                             insertStatement.executeUpdate();
                         }
+
+                        // Step 4: Delete any existing record in PaidCustomers with the same patient_id
+                        String deletePaidCustomerQuery = """
+                    DELETE FROM PaidCustomers
+                    WHERE patient_id = ?;
+                    """;
+                        try (PreparedStatement deletePaidCustomerStatement = con.prepareStatement(deletePaidCustomerQuery)) {
+                            deletePaidCustomerStatement.setInt(1, patientID);
+                            deletePaidCustomerStatement.executeUpdate();
+                        }
+
+                        // Step 5: Insert the new record into PaidCustomers with the total expenses in the remaining_balance column
+                        String insertPaidCustomerQuery = """
+                    INSERT INTO PaidCustomers (patient_id, payment_status, remaining_balance)
+                    VALUES (?, ?, ?);
+                    """;
+                        try (PreparedStatement insertPaidCustomerStatement = con.prepareStatement(insertPaidCustomerQuery)) {
+                            insertPaidCustomerStatement.setInt(1, patientID);
+                            insertPaidCustomerStatement.setString(2, "Unpaid"); // Payment status can be set to 'Unpaid' by default
+                            insertPaidCustomerStatement.setDouble(3, totalExpenses);
+                            insertPaidCustomerStatement.executeUpdate();
+                        }
+
                     } else {
                         System.out.println(wColor + "No patient found with ID: " + patientID);
                         return -1; // Return -1 if no patient found
@@ -558,12 +582,24 @@ public class DB {
 
 
 
+
+
     public void FinalBill(int patientID, double amount, double totalcost) {
         try {
 
             // Check if the amount paid matches the total cost
+
+
+            // Remove any existing entry for the patient in PaidCustomers
+            String deleteExistingQuery = "DELETE FROM PaidCustomers WHERE patient_id = ?;";
+            PreparedStatement deleteStatement = con.prepareStatement(deleteExistingQuery);
+            deleteStatement.setInt(1, patientID);
+            deleteStatement.executeUpdate();
+
+
+
             boolean paymentStatus = false;
-            double remainingBalance = totalcost;
+            double remainingBalance = CheckBalance(patientID);
 
             if (amount >= totalcost) {
                 paymentStatus = true;
@@ -571,12 +607,6 @@ public class DB {
             } else {
                 remainingBalance -= amount;  // Deduct paid amount from total cost
             }
-
-            // Remove any existing entry for the patient in PaidCustomers
-            String deleteExistingQuery = "DELETE FROM PaidCustomers WHERE patient_id = ?;";
-            PreparedStatement deleteStatement = con.prepareStatement(deleteExistingQuery);
-            deleteStatement.setInt(1, patientID);
-            deleteStatement.executeUpdate();
 
             // Insert the updated payment status and remaining balance into the PaidCustomers table
             String insertPaymentQuery = """
@@ -592,9 +622,8 @@ public class DB {
             // Print the result for verification
             System.out.println(wColor + "-------------------------------------------------------");
             System.out.println("Bill processed for Patient ID : " + patientID);
-            System.out.println("Total cost                    : " + totalcost);
-            System.out.println("Amount paid                   : " + amount);
             System.out.println("Remaining balance             : " + remainingBalance);
+            System.out.println("Amount paid                   : " + amount);
             System.out.println("Payment status                : " + (paymentStatus ? "Paid" : "Not Paid"));
             System.out.println("-------------------------------------------------------");
         } catch (SQLException e) {
@@ -605,7 +634,7 @@ public class DB {
 
 
 
-    public double CheckBalance(int PatientID) {
+    public double CheckTotalExpenses(int PatientID) {
         double remainingBalance = -1;
         try {
 
@@ -627,6 +656,30 @@ public class DB {
 
         return remainingBalance;
     }
+
+    public double CheckBalance(int PatientID) {
+        double remainingBalance = -1;
+        try {
+
+            String query = "SELECT remaining_balance FROM PaidCustomers WHERE patient_id = ?";
+
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+
+            preparedStatement.setInt(1, PatientID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                remainingBalance = resultSet.getDouble("remaining_balance");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error during database insert: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return remainingBalance;
+    }
+
 
 
     public double CheckBill(int PatientID) {
