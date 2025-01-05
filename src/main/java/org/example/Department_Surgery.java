@@ -9,7 +9,6 @@ public class Department_Surgery extends ServicesUsed{
 
     @Override
     public double addServices() {
-        String departmentName = "Surgery";
         String serviceUsed;
         System.out.println(titleborderColor +
                 """

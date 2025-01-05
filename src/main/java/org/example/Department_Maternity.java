@@ -9,7 +9,6 @@ public class Department_Maternity extends ServicesUsed{
 
     @Override
     public double addServices() {
-        String departmentName = "Maternity";
         String serviceUsed;
         System.out.println(titleborderColor +
                 """
